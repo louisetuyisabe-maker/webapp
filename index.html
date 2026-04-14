@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Emergency contacts for your community">
+<title>Inzitizi z'Acyitonderwa · Emergency Contacts</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --red:#c0392b;--red2:#e74c3c;--green:#1a6b3c;--green2:#27ae60;
+  --blue:#1a4a7c;--amber:#d4850a;
+  --bg:#f7f5f0;--card:#fff;--border:#ddd;
+  --text:#111;--muted:#555;--light:#f0ede8;
+}
+body{font-family:Georgia,serif;background:var(--bg);color:var(--text);font-size:16px;line-height:1.5}
+
+header{background:var(--red);color:#fff;padding:12px 16px}
+header h1{font-size:18px;font-weight:bold}
+header p{font-size:12px;opacity:.85;margin-top:2px}
+
+/* Search */
+#searchbox{width:100%;padding:12px 14px;font-size:16px;border:2px solid var(--red)}
+.search-wrap{padding:10px 12px;background:var(--light)}
+#no-results{display:none;padding:20px;text-align:center;color:var(--muted)}
+
+/* Priority */
+.priority{background:var(--red);padding:10px 12px}
+.priority-label{color:#ffc;font-size:11px;text-transform:uppercase;margin-bottom:6px}
+.priority-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.p-card{background:rgba(0,0,0,.35);padding:8px;text-align:center}
+.p-card a{color:#fff;text-decoration:none;display:block}
+.p-name{font-size:11px;opacity:.9}
+.p-num{font-size:20px;font-weight:bold}
+
+/* Categories */
+.cat-header{background:var(--blue);color:#fff;padding:8px 12px;cursor:pointer;display:flex;justify-content:space-between}
+.cat-header.green{background:var(--green)}
+.cat-header.amber{background:var(--amber)}
+.cat-header.slate{background:#2c3e50}
+
+/* Entries */
+.entries{background:#fff}
+.entry{border-bottom:1px solid var(--border);padding:10px 12px;display:flex;justify-content:space-between}
+.entry-name{font-weight:bold;font-size:15px}
+.entry-loc,.entry-hours{font-size:12px;color:var(--muted)}
+.call-btn{background:var(--green2);color:#fff;padding:7px 12px;text-decoration:none;font-weight:bold}
+.entry-num{font-size:12px;color:var(--muted)}
+
+.hidden{display:none}
+
+footer{padding:16px;font-size:11px;color:var(--muted);text-align:center;background:var(--light)}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>🚨 Emergency Directory — Kigali</h1>
+  <p>📞 Tap any number to call instantly</p>
+</header>
+
+<!-- PRIORITY -->
+<div class="priority">
+  <div class="priority-label">⭐ Always Visible — Critical Numbers</div>
+
+  <div class="priority-grid">
+
+    <div class="p-card">
+      <a href="tel:112">
+        <div class="p-name">🚓 Police</div>
+        <div class="p-num">112</div>
+      </a>
+    </div>
+
+    <div class="p-card">
+      <a href="tel:912">
+        <div class="p-name">🚑 Ambulance</div>
+        <div class="p-num">912</div>
+      </a>
+    </div>
+
+    <div class="p-card">
+      <a href="tel:110">
+        <div class="p-name">🔥 Fire</div>
+        <div class="p-num">110</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<!-- SEARCH -->
+<div class="search-wrap">
+  <input id="searchbox" type="search" placeholder="🔎 Search services...">
+</div>
+
+<div id="no-results">No results found</div>
+
+<!-- EMERGENCY -->
+<div class="cat-header" onclick="toggle('emergency')">
+  <span>🚨 Emergency Services</span><span>▲</span>
+</div>
+
+<div class="entries" id="emergency">
+
+  <div class="entry">
+    <div>
+      <div class="entry-name">🚓 Rwanda National Police</div>
+      <div class="entry-loc">Kigali City Command</div>
+      <div class="entry-hours">24/7</div>
+    </div>
+    <div>
+      <a class="call-btn" href="tel:112">📞 CALL</a>
+      <div class="entry-num">112</div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div>
+      <div class="entry-name">🚑 SAMU Ambulance</div>
+      <div class="entry-loc">Emergency Medical</div>
+      <div class="entry-hours">24/7</div>
+    </div>
+    <div>
+      <a class="call-btn" href="tel:912">📞 CALL</a>
+      <div class="entry-num">912</div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div>
+      <div class="entry-name">🔥 Fire Brigade</div>
+      <div class="entry-loc">Kigali City</div>
+      <div class="entry-hours">24/7</div>
+    </div>
+    <div>
+      <a class="call-btn" href="tel:110">📞 CALL</a>
+      <div class="entry-num">110</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- HEALTH -->
+<div class="cat-header green" onclick="toggle('health')">
+  <span>🏥 Health & Medical</span><span>▲</span>
+</div>
+
+<div class="entries" id="health">
+
+  <div class="entry">
+    <div>
+      <div class="entry-name">🏥 CHUK Hospital</div>
+      <div class="entry-loc">Kigali</div>
+      <div class="entry-hours">24/7</div>
+    </div>
+    <div><a class="call-btn" href="tel:0788303009">📞 CALL</a><div class="entry-num">0788 303 009</div></div>
+  </div>
+
+  <div class="entry">
+    <div>
+      <div class="entry-name">🏥 King Faisal Hospital</div>
+      <div class="entry-loc">Kigali</div>
+      <div class="entry-hours">24/7</div>
+    </div>
+    <div><a class="call-btn" href="tel:0252582421">📞 CALL</a><div class="entry-num">0252 582 421</div></div>
+  </div>
+
+</div>
+
+<!-- WATER -->
+<div class="cat-header amber" onclick="toggle('water')">
+  <span>💧 Water & Utilities</span><span>▲</span>
+</div>
+
+<div class="entries" id="water">
+
+  <div class="entry">
+    <div>
+      <div class="entry-name">💧 WASAC Water Service</div>
+      <div class="entry-loc">Leakage & supply issues</div>
+      <div class="entry-hours">Mon–Fri</div>
+    </div>
+    <div><a class="call-btn" href="tel:3131">📞 CALL</a><div class="entry-num">3131</div></div>
+  </div>
+
+  <div class="entry">
+    <div>
+      <div class="entry-name">⚡ REG Electricity</div>
+      <div class="entry-loc">Power outage support</div>
+      <div class="entry-hours">24/7</div>
+    </div>
+    <div><a class="call-btn" href="tel:5055">📞 CALL</a><div class="entry-num">5055</div></div>
+  </div>
+
+</div>
+
+<!-- COMMUNITY -->
+<div class="cat-header slate" onclick="toggle('community')">
+  <span>🏘️ Community Services</span><span>▲</span>
+</div>
+
+<div class="entries" id="community">
+
+  <div class="entry">
+    <div>
+      <div class="entry-name">👮 Local Leader</div>
+      <div class="entry-loc">Sector Office</div>
+      <div class="entry-hours">Working hours</div>
+    </div>
+    <div><a class="call-btn" href="tel:0788000001">📞 CALL</a><div class="entry-num">0788 000 001</div></div>
+  </div>
+
+  <div class="entry">
+    <div>
+      <div class="entry-name">🛡️ RIB Tip Line</div>
+      <div class="entry-loc">Anonymous reporting</div>
+      <div class="entry-hours">24/7</div>
+    </div>
+    <div><a class="call-btn" href="tel:997">📞 CALL</a><div class="entry-num">997</div></div>
+  </div>
+
+</div>
+
+<footer>
+  📌 Save this page to your home screen for offline use<br>
+  ⚡ Works on 2G — lightweight emergency system
+</footer>
+
+<script>
+function toggle(id){
+  var el=document.getElementById(id);
+  el.classList.toggle('hidden');
+}
+
+document.getElementById("searchbox").addEventListener("input",function(){
+  let q=this.value.toLowerCase();
+  let entries=document.querySelectorAll(".entry");
+  let found=0;
+
+  entries.forEach(e=>{
+    let text=e.innerText.toLowerCase();
+    if(text.includes(q)){
+      e.style.display="";
+      found++;
+    }else{
+      e.style.display="none";
+    }
+  });
+
+  document.getElementById("no-results").style.display = (q && found===0) ? "block":"none";
+});
+</script>
+
+</body>
+</html>
