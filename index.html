@@ -2,767 +2,710 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Emergency contacts for your community">
-<title>Emergency Contacts — Kigali</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Emergency contacts for Kigali and Rwanda - Enterprise Dashboard">
+<title>TCX Healthcare | Kigali Emergency Directory</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+/* ── BASE & RESET ────────────────────────────── */
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-:root{
-  /* TCX Healthcare palette */
-  --primary:#0A3D6B;
-  --primary-dark:#072E52;
-  --primary-light:#EBF3FC;
-  --accent:#E8320A;
-  --accent-soft:#FEF0ED;
-  --green:#0C6B3F;
-  --green-soft:#E8F5EE;
-  --amber:#B45309;
-  --amber-soft:#FEF3E2;
-  --slate:#1E3148;
-  --slate-soft:#EDF1F7;
+:root {
+  /* Enterprise TCX Palette */
+  --primary: #0A3D6B;
+  --primary-dark: #072E52;
+  --primary-light: #F0F6FC;
+  --accent: #E8320A;
+  --accent-hover: #C0200A;
+  --accent-soft: #FEF0ED;
+  --green: #0C6B3F;
+  --green-hover: #09502F;
+  --green-soft: #E8F5EE;
+  --amber: #D97706;
+  --amber-soft: #FEF3E2;
+  --slate: #1E3148;
+  --slate-soft: #EDF1F7;
 
-  --bg:#F4F7FB;
-  --surface:#FFFFFF;
-  --border:#D8E4F0;
-  --border-light:#EDF1F7;
-  --text:#0D1C2E;
-  --text-secondary:#4A6480;
-  --text-muted:#7A96B0;
+  --bg: #F4F7FB;
+  --surface: #FFFFFF;
+  --border: #E1E8F0;
+  --border-light: #F0F4F8;
+  
+  --text-main: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #94A3B8;
 
-  --radius-sm:6px;
-  --radius-md:10px;
-  --radius-lg:16px;
-  --shadow-sm:0 1px 3px rgba(10,61,107,.06), 0 1px 2px rgba(10,61,107,.04);
-  --shadow-md:0 4px 12px rgba(10,61,107,.08), 0 2px 4px rgba(10,61,107,.04);
-}
-
-body{
-  font-family:'DM Sans',sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  font-size:15px;
-  line-height:1.55;
-  min-height:100vh;
-}
-
-/* ── HEADER ────────────────────────────── */
-.app-header{
-  background:var(--primary);
-  padding:0 16px;
-  position:sticky;
-  top:0;
-  z-index:100;
-  box-shadow:0 2px 12px rgba(7,46,82,.25);
-}
-.header-inner{
-  max-width:520px;
-  margin:0 auto;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:14px 0;
-  gap:12px;
-}
-.header-brand{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-.header-icon{
-  width:36px;height:36px;
-  background:rgba(255,255,255,.15);
-  border-radius:var(--radius-sm);
-  display:flex;align-items:center;justify-content:center;
-  font-size:18px;
-  flex-shrink:0;
-}
-.header-title{
-  color:#fff;
-  font-size:15px;
-  font-weight:600;
-  letter-spacing:.01em;
-  line-height:1.25;
-}
-.header-sub{
-  color:rgba(255,255,255,.6);
-  font-size:11px;
-  font-weight:400;
-  letter-spacing:.03em;
-  text-transform:uppercase;
-  margin-top:1px;
-}
-.header-badge{
-  background:rgba(255,255,255,.12);
-  border:1px solid rgba(255,255,255,.2);
-  border-radius:20px;
-  padding:4px 10px;
-  color:rgba(255,255,255,.85);
-  font-size:11px;
-  font-weight:500;
-  white-space:nowrap;
-  flex-shrink:0;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 24px;
+  
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(15, 23, 42, 0.02);
+  --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.05), 0 2px 4px -2px rgba(15, 23, 42, 0.02);
+  --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.05), 0 4px 6px -4px rgba(15, 23, 42, 0.02);
+  
+  --font-sans: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  
+  --sidebar-width: 300px;
 }
 
-/* ── PRIORITY STRIP ─────────────────────── */
-.priority-strip{
-  background:linear-gradient(135deg,var(--accent) 0%,#C0200A 100%);
-  padding:16px;
-}
-.priority-inner{max-width:520px;margin:0 auto;}
-.priority-label{
-  color:rgba(255,255,255,.7);
-  font-size:10px;
-  font-weight:600;
-  letter-spacing:.1em;
-  text-transform:uppercase;
-  margin-bottom:10px;
-  display:flex;align-items:center;gap:6px;
-}
-.priority-label::before{
-  content:'';
-  width:6px;height:6px;
-  background:#FFD166;
-  border-radius:50%;
-  display:inline-block;
-}
-.priority-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:8px;
-}
-.p-card{
-  background:rgba(255,255,255,.12);
-  border:1px solid rgba(255,255,255,.18);
-  border-radius:var(--radius-md);
-  padding:12px 8px;
-  text-align:center;
-  transition:background .15s,transform .12s;
-  cursor:pointer;
-}
-.p-card:active{transform:scale(.96);}
-.p-card a{
-  color:#fff;
-  text-decoration:none;
-  display:block;
-}
-.p-card-icon{
-  font-size:20px;
-  margin-bottom:4px;
-  display:block;
-}
-.p-card-name{
-  font-size:10px;
-  font-weight:500;
-  letter-spacing:.04em;
-  text-transform:uppercase;
-  color:rgba(255,255,255,.75);
-  margin-bottom:6px;
-}
-.p-card-num{
-  font-family:'DM Mono',monospace;
-  font-size:22px;
-  font-weight:500;
-  color:#fff;
-  letter-spacing:.02em;
+body {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--text-main);
+  font-size: 14px;
+  line-height: 1.5;
+  height: 100vh;
+  overflow: hidden; /* Prevent body scroll, layout handles it */
+  display: flex;
 }
 
-/* ── SEARCH ─────────────────────────────── */
-.search-wrap{
-  background:var(--surface);
-  padding:12px 16px;
-  border-bottom:1px solid var(--border-light);
-  position:sticky;
-  top:64px;
-  z-index:90;
-  box-shadow:var(--shadow-sm);
+/* Custom Scrollbar for Desktop */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+
+/* ── SPLASH SCREEN (PERFECT UI) ──────────────── */
+#splash-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--primary-dark);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s;
 }
-.search-inner{
-  max-width:520px;
-  margin:0 auto;
-  position:relative;
+#splash-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+.splash-content { text-align: center; animation: slideUpFade 1s ease-out forwards; }
+.splash-logo-box {
+  width: 80px; height: 80px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: var(--radius-xl);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 40px; margin: 0 auto 24px;
+  box-shadow: 0 0 40px rgba(232, 50, 10, 0.2);
+  position: relative;
 }
-.search-icon{
-  position:absolute;
-  left:12px;top:50%;
-  transform:translateY(-50%);
-  color:var(--text-muted);
-  font-size:14px;
-  pointer-events:none;
+.splash-logo-box::after {
+  content: ''; position: absolute; inset: -4px;
+  border-radius: inherit; border: 2px solid transparent;
+  border-top-color: var(--accent);
+  animation: spin 1.5s linear infinite;
 }
-#searchbox{
-  width:100%;
-  padding:10px 12px 10px 36px;
-  font-size:14px;
-  font-family:'DM Sans',sans-serif;
-  border:1.5px solid var(--border);
-  border-radius:var(--radius-md);
-  background:var(--bg);
-  color:var(--text);
-  outline:none;
-  transition:border-color .15s,box-shadow .15s;
-  -webkit-appearance:none;
+.splash-title { color: #fff; font-size: 28px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+.splash-subtitle { color: rgba(255, 255, 255, 0.6); font-size: 15px; font-weight: 400; letter-spacing: 0.05em; text-transform: uppercase; }
+
+.loading-bar-container {
+  width: 240px; height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px; margin: 40px auto 0;
+  overflow: hidden;
 }
-#searchbox::placeholder{color:var(--text-muted);}
-#searchbox:focus{
-  border-color:var(--primary);
-  box-shadow:0 0 0 3px rgba(10,61,107,.1);
-  background:#fff;
+.loading-bar-fill {
+  height: 100%; width: 0%;
+  background: var(--accent);
+  border-radius: 4px;
+  transition: width 1.8s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-/* ── CONTENT ─────────────────────────────── */
-.content{
-  max-width:520px;
-  margin:0 auto;
-  padding:16px 16px 80px;
+@keyframes spin { 100% { transform: rotate(360deg); } }
+@keyframes slideUpFade { 
+  0% { opacity: 0; transform: translateY(20px); } 
+  100% { opacity: 1; transform: translateY(0); } 
 }
 
-#no-results{
-  display:none;
-  padding:40px 20px;
-  text-align:center;
-  color:var(--text-muted);
+/* ── LAYOUT ARCHITECTURE ─────────────────────── */
+#app-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transform: scale(0.98);
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
-#no-results svg{margin-bottom:12px;opacity:.4;}
-#no-results p{font-size:14px;}
+#app-container.loaded { opacity: 1; transform: scale(1); }
 
-/* ── CATEGORY ────────────────────────────── */
-.category{
-  background:var(--surface);
-  border:1px solid var(--border-light);
-  border-radius:var(--radius-lg);
-  overflow:hidden;
-  margin-bottom:12px;
-  box-shadow:var(--shadow-sm);
+/* ── SIDEBAR ─────────────────────────────────── */
+.sidebar {
+  width: var(--sidebar-width);
+  background: var(--primary);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  border-right: 1px solid rgba(255,255,255,0.1);
+  z-index: 10;
 }
+.sidebar-header {
+  padding: 32px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.brand-icon {
+  width: 48px; height: 48px;
+  background: linear-gradient(135deg, var(--accent) 0%, #C0200A 100%);
+  border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+  box-shadow: 0 4px 12px rgba(232, 50, 10, 0.3);
+}
+.brand-text h1 { font-size: 18px; font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; }
+.brand-text p { font-size: 12px; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-top: 4px; letter-spacing: 0.05em;}
 
-.cat-header{
-  padding:13px 16px;
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  user-select:none;
-  transition:background .12s;
-  border-bottom:1px solid var(--border-light);
+.priority-section { padding: 0 24px 24px; flex-grow: 1; overflow-y: auto; }
+.section-label {
+  font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.5);
+  text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
 }
-.cat-header:active{opacity:.85;}
+.section-label::before { content:''; width: 6px; height: 6px; background: #FFD166; border-radius: 50%; box-shadow: 0 0 8px rgba(255,209,102,0.6); }
 
-.cat-header-left{
-  display:flex;
-  align-items:center;
-  gap:10px;
+.priority-card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  padding: 20px; margin-bottom: 16px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
 }
-.cat-dot{
-  width:8px;height:8px;
-  border-radius:50%;
-  flex-shrink:0;
+.priority-card:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.2);
 }
-.cat-title{
-  font-weight:600;
-  font-size:13px;
-  letter-spacing:.01em;
+.p-icon { font-size: 32px; margin-bottom: 12px; }
+.p-title { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.8); text-transform: uppercase; letter-spacing: 0.05em; }
+.p-num { font-family: var(--font-mono); font-size: 32px; font-weight: 600; margin-top: 4px; color: #fff; }
+.p-action {
+  margin-top: 16px; padding: 8px 24px;
+  background: rgba(255,255,255,0.1); border-radius: 100px;
+  color: #fff; text-decoration: none; font-size: 12px; font-weight: 600;
+  transition: background 0.2s; width: 100%;
 }
-.cat-count{
-  font-size:11px;
-  font-weight:500;
-  padding:2px 7px;
-  border-radius:12px;
-}
-.cat-chevron{
-  transition:transform .2s;
-  color:var(--text-muted);
-  font-size:12px;
-}
-.cat-header.collapsed .cat-chevron{transform:rotate(-90deg);}
+.priority-card:hover .p-action { background: var(--accent); }
 
-/* color themes per category */
-.cat-emergency .cat-header{background:var(--accent-soft);}
-.cat-emergency .cat-dot{background:var(--accent);}
-.cat-emergency .cat-title{color:var(--accent);}
-.cat-emergency .cat-count{background:rgba(232,50,10,.1);color:var(--accent);}
+.sidebar-footer { padding: 24px; border-top: 1px solid rgba(255,255,255,0.05); font-size: 11px; color: rgba(255,255,255,0.4); text-align: center; }
 
-.cat-health .cat-header{background:var(--green-soft);}
-.cat-health .cat-dot{background:var(--green);}
-.cat-health .cat-title{color:var(--green);}
-.cat-health .cat-count{background:rgba(12,107,63,.1);color:var(--green);}
+/* ── MAIN CONTENT AREA ───────────────────────── */
+.main-area { flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; background: var(--bg); }
 
-.cat-water .cat-header{background:var(--amber-soft);}
-.cat-water .cat-dot{background:var(--amber);}
-.cat-water .cat-title{color:var(--amber);}
-.cat-water .cat-count{background:rgba(180,83,9,.1);color:var(--amber);}
+/* TOP HEADER */
+.top-header {
+  height: 80px; background: var(--surface); border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px; flex-shrink: 0;
+}
+.page-title { font-size: 20px; font-weight: 600; color: var(--text-main); }
 
-.cat-community .cat-header{background:var(--slate-soft);}
-.cat-community .cat-dot{background:var(--slate);}
-.cat-community .cat-title{color:var(--slate);}
-.cat-community .cat-count{background:rgba(30,49,72,.1);color:var(--slate);}
-
-/* ── ENTRIES ─────────────────────────────── */
-.entries{}
-.entry{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:13px 16px;
-  border-bottom:1px solid var(--border-light);
-  gap:12px;
-  transition:background .1s;
+.search-container { position: relative; width: 400px; }
+.search-icon {
+  position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+  color: var(--text-muted); pointer-events: none;
 }
-.entry:last-child{border-bottom:none;}
-.entry:active{background:var(--bg);}
-
-.entry-info{flex:1;min-width:0;}
-.entry-name{
-  font-weight:600;
-  font-size:14px;
-  color:var(--text);
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
+#global-search {
+  width: 100%; padding: 12px 16px 12px 44px;
+  font-family: var(--font-sans); font-size: 14px;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius-xl); color: var(--text-main);
+  transition: all 0.2s ease; outline: none;
 }
-.entry-meta{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  margin-top:3px;
-  flex-wrap:wrap;
-}
-.entry-loc{
-  font-size:12px;
-  color:var(--text-secondary);
-}
-.entry-divider{
-  width:3px;height:3px;
-  border-radius:50%;
-  background:var(--border);
-  flex-shrink:0;
-}
-.entry-hours{
-  font-size:11px;
-  font-weight:500;
-  padding:2px 7px;
-  border-radius:10px;
-}
-.hours-247{
-  background:#E8F5EE;
-  color:#0C6B3F;
-}
-.hours-day{
-  background:#FEF3E2;
-  color:#B45309;
+#global-search::placeholder { color: var(--text-muted); }
+#global-search:focus { background: var(--surface); border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-light); }
+.search-shortcut {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);
+  background: var(--surface); border: 1px solid var(--border); padding: 2px 6px; border-radius: 4px;
 }
 
-.entry-action{
-  display:flex;
-  flex-direction:column;
-  align-items:flex-end;
-  gap:4px;
-  flex-shrink:0;
+.user-profile { display: flex; align-items: center; gap: 12px; }
+.avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; border: 1px solid var(--border); }
+.user-info { display: flex; flex-direction: column; }
+.user-name { font-size: 14px; font-weight: 600; color: var(--text-main); }
+.user-role { font-size: 12px; color: var(--text-secondary); }
+
+/* DASHBOARD CONTENT */
+.dashboard-content { padding: 40px; overflow-y: auto; flex-grow: 1; }
+
+.section-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 24px; }
+.section-header h2 { font-size: 18px; font-weight: 600; color: var(--text-main); }
+.section-header p { font-size: 14px; color: var(--text-secondary); margin-top: 4px; }
+
+#no-results {
+  display: none; text-align: center; padding: 80px 20px;
+  background: var(--surface); border: 1px dashed var(--border); border-radius: var(--radius-lg);
 }
-.call-btn{
-  display:flex;
-  align-items:center;
-  gap:5px;
-  background:var(--green);
-  color:#fff;
-  text-decoration:none;
-  padding:8px 14px;
-  border-radius:var(--radius-sm);
-  font-size:12px;
-  font-weight:600;
-  letter-spacing:.04em;
-  text-transform:uppercase;
-  transition:background .12s,transform .1s;
-  white-space:nowrap;
-}
-.call-btn:active{background:var(--primary-dark);transform:scale(.96);}
-.call-btn svg{width:13px;height:13px;flex-shrink:0;}
-.entry-num{
-  font-family:'DM Mono',monospace;
-  font-size:11px;
-  color:var(--text-muted);
-  letter-spacing:.04em;
+#no-results span { font-size: 48px; display: block; margin-bottom: 16px; opacity: 0.5; }
+#no-results h3 { font-size: 18px; color: var(--text-main); margin-bottom: 8px; }
+#no-results p { color: var(--text-secondary); }
+
+/* GRID LAYOUT (PC FORMAT) */
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+  gap: 24px;
+  align-items: start;
 }
 
-/* emergency category — red call buttons */
-.cat-emergency .call-btn{background:var(--accent);}
-.cat-emergency .call-btn:active{background:#a02408;}
+/* CARDS */
+.category-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.category-card:hover { box-shadow: var(--shadow-md); }
 
-/* ── HIDDEN ──────────────────────────────── */
-.entries.hidden{display:none;}
+.card-header {
+  padding: 20px 24px; border-bottom: 1px solid var(--border-light);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.card-title-wrap { display: flex; align-items: center; gap: 12px; }
+.cat-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+.card-title { font-size: 16px; font-weight: 600; color: var(--text-main); }
+.item-count { font-size: 12px; font-weight: 500; color: var(--text-muted); background: var(--bg); padding: 4px 10px; border-radius: 20px; border: 1px solid var(--border); }
 
-/* ── FOOTER ──────────────────────────────── */
-footer{
-  background:var(--surface);
-  border-top:1px solid var(--border-light);
-  padding:16px;
-  text-align:center;
+/* Theming category headers */
+.cat-emergency .cat-icon { background: var(--accent-soft); color: var(--accent); }
+.cat-health .cat-icon { background: var(--green-soft); color: var(--green); }
+.cat-water .cat-icon { background: var(--amber-soft); color: var(--amber); }
+.cat-community .cat-icon { background: var(--primary-light); color: var(--primary); }
+
+.card-body { padding: 12px; }
+
+/* ENTRIES (TABLE/LIST STYLE) */
+.entry {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px; border-radius: var(--radius-md);
+  transition: background 0.15s ease;
 }
-.footer-inner{
-  max-width:520px;
-  margin:0 auto;
+.entry:hover { background: var(--bg); }
+
+.entry-info { display: flex; align-items: center; gap: 16px; flex: 1; min-width: 0; }
+.entry-avatar { width: 40px; height: 40px; border-radius: 10px; background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; box-shadow: var(--shadow-sm); }
+
+.entry-details { display: flex; flex-direction: column; gap: 4px; overflow: hidden; }
+.entry-name { font-weight: 600; font-size: 14px; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.entry-meta { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-secondary); }
+.badge { padding: 2px 8px; border-radius: 6px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+.badge-247 { background: var(--green-soft); color: var(--green-hover); }
+.badge-day { background: var(--amber-soft); color: var(--amber); }
+
+.entry-action { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
+.entry-number { font-family: var(--font-mono); font-size: 14px; font-weight: 500; color: var(--text-secondary); }
+.btn-call {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 16px; border-radius: var(--radius-sm);
+  font-size: 13px; font-weight: 600; text-decoration: none;
+  background: var(--surface); border: 1px solid var(--border); color: var(--text-main);
+  transition: all 0.2s; box-shadow: var(--shadow-sm); cursor: pointer;
 }
-.footer-tips{
-  display:flex;
-  justify-content:center;
-  gap:20px;
-  flex-wrap:wrap;
-  margin-bottom:8px;
+.btn-call:hover { background: var(--primary-light); border-color: var(--primary); color: var(--primary); }
+.btn-call svg { width: 14px; height: 14px; }
+
+/* Highlight for search terms */
+mark { background: #FEF08A; color: #854D0E; padding: 0 2px; border-radius: 2px; }
+
+/* Responsiveness */
+@media (max-width: 1200px) {
+  .categories-grid { grid-template-columns: 1fr; }
 }
-.footer-tip{
-  display:flex;align-items:center;gap:5px;
-  font-size:11px;
-  color:var(--text-muted);
-}
-.footer-copy{
-  font-size:10px;
-  color:var(--text-muted);
-  opacity:.6;
-  letter-spacing:.04em;
-  text-transform:uppercase;
+@media (max-width: 900px) {
+  .sidebar { width: 260px; }
+  .top-header { padding: 0 24px; }
+  .search-container { width: 300px; }
 }
 </style>
 </head>
 
 <body>
 
-<!-- HEADER -->
-<header class="app-header">
-  <div class="header-inner">
-    <div class="header-brand">
-      <div class="header-icon">🚨</div>
-      <div>
-        <div class="header-title">Emergency Directory</div>
-        <div class="header-sub">Kigali · Community</div>
-      </div>
-    </div>
-    <div class="header-badge">📞 Tap to Call</div>
-  </div>
-</header>
-
-<!-- PRIORITY -->
-<div class="priority-strip">
-  <div class="priority-inner">
-    <div class="priority-label">Critical Numbers — Always Visible</div>
-    <div class="priority-grid">
-
-      <div class="p-card">
-        <a href="tel:112">
-          <span class="p-card-icon">🚓</span>
-          <div class="p-card-name">Police</div>
-          <div class="p-card-num">112</div>
-        </a>
-      </div>
-
-      <div class="p-card">
-        <a href="tel:912">
-          <span class="p-card-icon">🚑</span>
-          <div class="p-card-name">Ambulance</div>
-          <div class="p-card-num">912</div>
-        </a>
-      </div>
-
-      <div class="p-card">
-        <a href="tel:110">
-          <span class="p-card-icon">🔥</span>
-          <div class="p-card-name">Fire</div>
-          <div class="p-card-num">110</div>
-        </a>
-      </div>
-
+<div id="splash-screen">
+  <div class="splash-content">
+    <div class="splash-logo-box">🚨</div>
+    <h1 class="splash-title">Emergency Directory</h1>
+    <p class="splash-subtitle">TCX Healthcare · Kigali</p>
+    <div class="loading-bar-container">
+      <div class="loading-bar-fill" id="progress-fill"></div>
     </div>
   </div>
 </div>
 
-<!-- SEARCH -->
-<div class="search-wrap">
-  <div class="search-inner">
-    <span class="search-icon">🔎</span>
-    <input id="searchbox" type="search" placeholder="Search services, hospitals, utilities…">
-  </div>
+<div id="app-container">
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="brand-icon">🚨</div>
+      <div class="brand-text">
+        <h1>Directory</h1>
+        <p>Kigali Services</p>
+      </div>
+    </div>
+
+    <div class="priority-section">
+      <div class="section-label">Critical Dispatch</div>
+      
+      <div class="priority-card" onclick="window.location.href='tel:112'">
+        <div class="p-icon">🚓</div>
+        <div class="p-title">National Police</div>
+        <div class="p-num">112</div>
+        <a href="tel:112" class="p-action" onclick="event.stopPropagation()">Dispatch Call</a>
+      </div>
+
+      <div class="priority-card" onclick="window.location.href='tel:912'">
+        <div class="p-icon">🚑</div>
+        <div class="p-title">SAMU Ambulance</div>
+        <div class="p-num">912</div>
+        <a href="tel:912" class="p-action" onclick="event.stopPropagation()">Dispatch Call</a>
+      </div>
+
+      <div class="priority-card" onclick="window.location.href='tel:110'">
+        <div class="p-icon">🔥</div>
+        <div class="p-title">Fire Brigade</div>
+        <div class="p-num">110</div>
+        <a href="tel:110" class="p-action" onclick="event.stopPropagation()">Dispatch Call</a>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      Powered by NextWave Goma<br>System Active & Online
+    </div>
+  </aside>
+
+  <main class="main-area">
+    
+    <header class="top-header">
+      <div class="page-title">Community Dashboard</div>
+      
+      <div class="search-container">
+        <svg class="search-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        <input type="text" id="global-search" placeholder="Search facilities, departments, codes..." autocomplete="off">
+        <span class="search-shortcut">Cmd+K</span>
+      </div>
+
+      <div class="user-profile">
+        <div class="user-info" style="text-align: right;">
+          <span class="user-name">Isaac Nshuti</span>
+          <span class="user-role">System Admin</span>
+        </div>
+        <div class="avatar">IN</div>
+      </div>
+    </header>
+
+    <div class="dashboard-content">
+      
+      <div class="section-header">
+        <div>
+          <h2>All Departments & Services</h2>
+          <p>Real-time directory for local authorities, healthcare facilities, and utilities.</p>
+        </div>
+      </div>
+
+      <div id="no-results">
+        <span>📭</span>
+        <h3>No services found</h3>
+        <p>Try adjusting your search terms or checking for typos.</p>
+      </div>
+
+      <div class="categories-grid" id="directory-grid">
+        
+        <div class="category-card cat-emergency">
+          <div class="card-header">
+            <div class="card-title-wrap">
+              <div class="cat-icon">🚨</div>
+              <div class="card-title">Law & Emergency</div>
+            </div>
+            <span class="item-count">3 items</span>
+          </div>
+          <div class="card-body">
+            
+            <div class="entry">
+              <div class="entry-info">
+                <div class="entry-avatar">🚓</div>
+                <div class="entry-details">
+                  <span class="entry-name">Rwanda National Police</span>
+                  <div class="entry-meta">
+                    <span class="badge badge-247">24/7 Response</span>
+                    <span>• Kigali Command Center</span>
+                  </div>
+                </div>
+              </div>
+              <div class="entry-action">
+                <span class="entry-number">112</span>
+                <a href="tel:112" class="btn-call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>Call</a>
+              </div>
+            </div>
+
+            <div class="entry">
+              <div class="entry-info">
+                <div class="entry-avatar">🚦</div>
+                <div class="entry-details">
+                  <span class="entry-name">Traffic Police Department</span>
+                  <div class="entry-meta">
+                    <span class="badge badge-247">24/7 Response</span>
+                    <span>• Road accidents & blocks</span>
+                  </div>
+                </div>
+              </div>
+              <div class="entry-action">
+                <span class="entry-number">118</span>
+                <a href="tel:118" class="btn-call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>Call</a>
+              </div>
+            </div>
+
+            <div class="entry">
+              <div class="entry-info">
+                <div class="entry-avatar">🛡️</div>
+                <div class="entry-details">
+                  <span class="entry-name">RIB Investigation Line</span>
+                  <div class="entry-meta">
+                    <span class="badge badge-247">24/7 Response</span>
+                    <span>• Anonymous Tip Line</span>
+                  </div>
+                </div>
+              </div>
+              <div class="entry-action">
+                <span class="entry-number">166</span>
+                <a href="tel:166" class="btn-call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>Call</a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="category-card cat-health">
+          <div class="card-header">
+            <div class="card-title-wrap">
+              <div class="cat-icon">🏥</div>
+              <div class="card-title">Healthcare Facilities</div>
+            </div>
+            <span class="item-count">4 items</span>
+          </div>
+          <div class="card-body">
+            
+            <div class="entry">
+              <div class="entry-info">
+                <div class="entry-avatar">🦠</div>
+                <div class="entry-details">
+                  <span class="entry-name">RBC Epidemic Response</span>
+                  <div class="entry-meta">
+                    <span class="badge badge-247">24/7 Active</span>
+                    <span>• Toll Free Support</span>
+                  </div>
+                </div>
+              </div>
+              <div class="entry-action">
+                <span class="entry-number">114</span>
+                <a href="tel:114" class="btn-call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>Call</a>
+              </div>
+            </div>
+
+            <div class="entry">
+              <div class="entry-info">
+                <div class="entry-avatar">🏥</div>
+                <div class="entry-details">
+                  <span class="entry-name">CHUK Regional Hospital</span>
+                  <div class="entry-meta">
+                    <span class="badge badge-247">24/7 Open</span>
+                    <span>• Central Kigali Area</span>
+                  </div>
+                </div>
+              </div>
+              <div class="entry-action">
+                <span class="entry-number">0788 303 009</span>
+                <a href="tel:0788303009" class="btn-call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>Call</a>
+              </div>
+            </div>
+
+            <div class="entry">
+              <div class="entry-info">
+                <div class="entry-avatar">🏥</div>
+                <div class="entry-details">
+                  <span class="entry-name">King Faisal Hospital</span>
+                  <div class="entry-meta">
+                    <span class="badge badge-247">24/7 Open</span>
+                    <span>• Kacyiru District</span>
+                  </div>
+                </div>
+              </div>
+              <div class="entry-action">
+                <span class="entry-number">3939</span>
+                <a href="tel:3939" class="btn-call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>Call</a>
+              </div>
+            </div>
+
+            <div class="entry">
+              <div class="entry-info">
+                <div class="entry-avatar">🛑</div>
+                <div class="entry-details">
+                  <span class="entry-name">Isange One Stop Center</span>
+                  <div class="entry-meta">
+                    <span class="badge badge-247">24/7 Support</span>
+                    <span>• GBV & Abuse Handling</span>
+                  </div>
+                </div>
+              </div>
+              <div class="entry-action">
+                <span class="entry-number">3029</span>
+                <a href="tel:3029" class="btn-call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>Call</a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="category-card cat-water">
+          <div class="card-header">
+            <div class="card-title-wrap">
+              <div class="cat-icon">⚡</div>
+              <div class="card-title">Public Utilities</div>
+            </div>
+            <span class="item-count">2 items</span>
+          </div>
+          <div class="card-body">
+            
+            <div class="entry">
+              <div class="entry-info">
+                <div class="entry-avatar">💧</div>
+                <div class="entry-details">
+                  <span class="entry-name">WASAC Water Support</span>
+                  <div class="entry-meta">
+                    <span class="badge badge-day">Standard Hrs</span>
+                    <span>• Outages & Leakages</span>
+                  </div>
+                </div>
+              </div>
+              <div class="entry-action">
+                <span class="entry-number">3131</span>
+                <a href="tel:3131" class="btn-call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>Call</a>
+              </div>
+            </div>
+
+            <div class="entry">
+              <div class="entry-info">
+                <div class="entry-avatar">⚡</div>
+                <div class="entry-details">
+                  <span class="entry-name">REG Electricity Grid</span>
+                  <div class="entry-meta">
+                    <span class="badge badge-247">24/7 Support</span>
+                    <span>• Power Outages</span>
+                  </div>
+                </div>
+              </div>
+              <div class="entry-action">
+                <span class="entry-number">3535</span>
+                <a href="tel:3535" class="btn-call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>Call</a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div></div></main>
 </div>
-
-<!-- CONTENT -->
-<div class="content">
-
-  <div id="no-results">
-    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" display="block" style="margin:0 auto 12px">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
-    </svg>
-    <p>No results found</p>
-  </div>
-
-  <!-- EMERGENCY -->
-  <div class="category cat-emergency">
-    <div class="cat-header" onclick="toggle(this,'emergency-entries')">
-      <div class="cat-header-left">
-        <span class="cat-dot"></span>
-        <span class="cat-title">🚨 Emergency Services</span>
-        <span class="cat-count">3</span>
-      </div>
-      <span class="cat-chevron">▾</span>
-    </div>
-
-    <div class="entries" id="emergency-entries">
-
-      <div class="entry">
-        <div class="entry-info">
-          <div class="entry-name">🚓 Rwanda National Police</div>
-          <div class="entry-meta">
-            <span class="entry-loc">Kigali City Command</span>
-            <span class="entry-divider"></span>
-            <span class="entry-hours hours-247">24/7</span>
-          </div>
-        </div>
-        <div class="entry-action">
-          <a class="call-btn" href="tel:112">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
-            Call
-          </a>
-          <span class="entry-num">112</span>
-        </div>
-      </div>
-
-      <div class="entry">
-        <div class="entry-info">
-          <div class="entry-name">🚑 SAMU Ambulance</div>
-          <div class="entry-meta">
-            <span class="entry-loc">Emergency Medical</span>
-            <span class="entry-divider"></span>
-            <span class="entry-hours hours-247">24/7</span>
-          </div>
-        </div>
-        <div class="entry-action">
-          <a class="call-btn" href="tel:912">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
-            Call
-          </a>
-          <span class="entry-num">912</span>
-        </div>
-      </div>
-
-      <div class="entry">
-        <div class="entry-info">
-          <div class="entry-name">🔥 Fire Brigade</div>
-          <div class="entry-meta">
-            <span class="entry-loc">Kigali City</span>
-            <span class="entry-divider"></span>
-            <span class="entry-hours hours-247">24/7</span>
-          </div>
-        </div>
-        <div class="entry-action">
-          <a class="call-btn" href="tel:110">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
-            Call
-          </a>
-          <span class="entry-num">110</span>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- HEALTH -->
-  <div class="category cat-health">
-    <div class="cat-header" onclick="toggle(this,'health-entries')">
-      <div class="cat-header-left">
-        <span class="cat-dot"></span>
-        <span class="cat-title">🏥 Health & Medical</span>
-        <span class="cat-count">2</span>
-      </div>
-      <span class="cat-chevron">▾</span>
-    </div>
-
-    <div class="entries" id="health-entries">
-
-      <div class="entry">
-        <div class="entry-info">
-          <div class="entry-name">🏥 CHUK Hospital</div>
-          <div class="entry-meta">
-            <span class="entry-loc">Kigali</span>
-            <span class="entry-divider"></span>
-            <span class="entry-hours hours-247">24/7</span>
-          </div>
-        </div>
-        <div class="entry-action">
-          <a class="call-btn" href="tel:0788303009">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
-            Call
-          </a>
-          <span class="entry-num">0788 303 009</span>
-        </div>
-      </div>
-
-      <div class="entry">
-        <div class="entry-info">
-          <div class="entry-name">🏥 King Faisal Hospital</div>
-          <div class="entry-meta">
-            <span class="entry-loc">Kigali</span>
-            <span class="entry-divider"></span>
-            <span class="entry-hours hours-247">24/7</span>
-          </div>
-        </div>
-        <div class="entry-action">
-          <a class="call-btn" href="tel:0252582421">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
-            Call
-          </a>
-          <span class="entry-num">0252 582 421</span>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- WATER -->
-  <div class="category cat-water">
-    <div class="cat-header" onclick="toggle(this,'water-entries')">
-      <div class="cat-header-left">
-        <span class="cat-dot"></span>
-        <span class="cat-title">💧 Water & Utilities</span>
-        <span class="cat-count">2</span>
-      </div>
-      <span class="cat-chevron">▾</span>
-    </div>
-
-    <div class="entries" id="water-entries">
-
-      <div class="entry">
-        <div class="entry-info">
-          <div class="entry-name">💧 WASAC Water Service</div>
-          <div class="entry-meta">
-            <span class="entry-loc">Leakage & supply issues</span>
-            <span class="entry-divider"></span>
-            <span class="entry-hours hours-day">Mon–Fri</span>
-          </div>
-        </div>
-        <div class="entry-action">
-          <a class="call-btn" href="tel:3131">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
-            Call
-          </a>
-          <span class="entry-num">3131</span>
-        </div>
-      </div>
-
-      <div class="entry">
-        <div class="entry-info">
-          <div class="entry-name">⚡ REG Electricity</div>
-          <div class="entry-meta">
-            <span class="entry-loc">Power outage support</span>
-            <span class="entry-divider"></span>
-            <span class="entry-hours hours-247">24/7</span>
-          </div>
-        </div>
-        <div class="entry-action">
-          <a class="call-btn" href="tel:5055">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
-            Call
-          </a>
-          <span class="entry-num">5055</span>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- COMMUNITY -->
-  <div class="category cat-community">
-    <div class="cat-header" onclick="toggle(this,'community-entries')">
-      <div class="cat-header-left">
-        <span class="cat-dot"></span>
-        <span class="cat-title">🏘️ Community Services</span>
-        <span class="cat-count">2</span>
-      </div>
-      <span class="cat-chevron">▾</span>
-    </div>
-
-    <div class="entries" id="community-entries">
-
-      <div class="entry">
-        <div class="entry-info">
-          <div class="entry-name">👮 Local Leader</div>
-          <div class="entry-meta">
-            <span class="entry-loc">Sector Office</span>
-            <span class="entry-divider"></span>
-            <span class="entry-hours hours-day">Working hours</span>
-          </div>
-        </div>
-        <div class="entry-action">
-          <a class="call-btn" href="tel:0788000001">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
-            Call
-          </a>
-          <span class="entry-num">0788 000 001</span>
-        </div>
-      </div>
-
-      <div class="entry">
-        <div class="entry-info">
-          <div class="entry-name">🛡️ RIB Tip Line</div>
-          <div class="entry-meta">
-            <span class="entry-loc">Anonymous reporting</span>
-            <span class="entry-divider"></span>
-            <span class="entry-hours hours-247">24/7</span>
-          </div>
-        </div>
-        <div class="entry-action">
-          <a class="call-btn" href="tel:997">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
-            Call
-          </a>
-          <span class="entry-num">997</span>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-</div><!-- /content -->
-
-<footer>
-  <div class="footer-inner">
-    <div class="footer-tips">
-      <span class="footer-tip">📌 Save to home screen for offline use</span>
-      <span class="footer-tip">⚡ Works on 2G networks</span>
-    </div>
-    <div class="footer-copy">TCX Community · Kigali Emergency Directory</div>
-  </div>
-</footer>
 
 <script>
-function toggle(headerEl, entriesId) {
-  var entries = document.getElementById(entriesId);
-  var isHidden = entries.classList.toggle('hidden');
-  headerEl.classList.toggle('collapsed', isHidden);
-}
+// 1. Splash Screen & Initialization Logic
+window.addEventListener("load", () => {
+  const splash = document.getElementById("splash-screen");
+  const progressFill = document.getElementById("progress-fill");
+  const appContainer = document.getElementById("app-container");
 
-document.getElementById("searchbox").addEventListener("input", function() {
-  var q = this.value.toLowerCase().trim();
-  var entries = document.querySelectorAll(".entry");
-  var found = 0;
+  // Animate progress bar to 100%
+  setTimeout(() => {
+    progressFill.style.width = "100%";
+  }, 100);
 
-  entries.forEach(function(e) {
-    var text = e.innerText.toLowerCase();
-    if (text.includes(q)) {
-      e.style.display = "";
-      found++;
-      // ensure parent entries container is visible when searching
-      var parent = e.closest(".entries");
-      if (parent) parent.classList.remove("hidden");
-      var header = parent && parent.previousElementSibling;
-      if (header) header.classList.remove("collapsed");
+  // Remove splash and reveal UI after loading animation
+  setTimeout(() => {
+    splash.classList.add("hidden");
+    appContainer.classList.add("loaded");
+    
+    // Clean up DOM after fade out
+    setTimeout(() => { splash.remove(); }, 800);
+  }, 1800); // 1.8 seconds loading experience
+});
+
+// 2. Global Keyboard Shortcut for Search (Cmd+K or Ctrl+K)
+document.addEventListener('keydown', (e) => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+    e.preventDefault();
+    document.getElementById('global-search').focus();
+  }
+});
+
+// 3. Desktop Optimized Search Logic
+const searchInput = document.getElementById("global-search");
+const grid = document.getElementById("directory-grid");
+const noResults = document.getElementById("no-results");
+
+searchInput.addEventListener("input", function(e) {
+  const query = e.target.value.toLowerCase().trim();
+  const cards = document.querySelectorAll(".category-card");
+  let globalFound = 0;
+
+  cards.forEach(card => {
+    const entries = card.querySelectorAll(".entry");
+    let cardFoundCount = 0;
+
+    entries.forEach(entry => {
+      // Find elements to highlight or search within
+      const nameEl = entry.querySelector('.entry-name');
+      const detailsEl = entry.querySelector('.entry-details');
+      const text = detailsEl.textContent.toLowerCase();
+      
+      // Basic text reset
+      nameEl.innerHTML = nameEl.textContent;
+
+      if (text.includes(query)) {
+        entry.style.display = "flex";
+        cardFoundCount++;
+        globalFound++;
+        
+        // Add highlight markup if query isn't empty
+        if (query.length > 1) {
+          const regex = new RegExp(`(${query})`, "gi");
+          nameEl.innerHTML = nameEl.textContent.replace(regex, "<mark>$1</mark>");
+        }
+      } else {
+        entry.style.display = "none";
+      }
+    });
+
+    // Hide entire card if no entries match inside it
+    if (query !== "" && cardFoundCount === 0) {
+      card.style.display = "none";
     } else {
-      e.style.display = "none";
+      card.style.display = "block";
+      // Update item count dynamically
+      const countLabel = card.querySelector(".item-count");
+      countLabel.textContent = query === "" 
+        ? `${entries.length} items` 
+        : `${cardFoundCount} found`;
     }
   });
 
-  document.getElementById("no-results").style.display = (q && found === 0) ? "block" : "none";
+  // Toggle No Results view and Grid view
+  if (query && globalFound === 0) {
+    grid.style.display = "none";
+    noResults.style.display = "block";
+  } else {
+    grid.style.display = "grid";
+    noResults.style.display = "none";
+  }
 });
 </script>
 
