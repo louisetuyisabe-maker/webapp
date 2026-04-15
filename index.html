@@ -1,26 +1,31 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="TCX Healthcare - Smart Triage System">
-<title>TCX Healthcare | Smart Triage</title>
+<meta name="description" content="Emergency contacts for Kigali and Rwanda - Enterprise Dashboard">
+<title>TCX Healthcare | Kigali Emergency Directory</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
 <style>
+/* ── BASE & RESET ────────────────────────────── */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
 :root {
-  /* TCX Enterprise Palette */
+  /* Enterprise TCX Palette */
   --primary: #0A3D6B;
   --primary-dark: #072E52;
-  --primary-light: #EBF3FC;
+  --primary-light: #F0F6FC;
   --accent: #E8320A;
-  --accent-dark: #C0200A;
+  --accent-hover: #C0200A;
   --accent-soft: #FEF0ED;
   --green: #0C6B3F;
   --green-hover: #09502F;
   --green-soft: #E8F5EE;
-  --amber: #B45309;
+  --amber: #D97706;
   --amber-soft: #FEF3E2;
   --slate: #1E3148;
   --slate-soft: #EDF1F7;
@@ -41,1027 +46,668 @@
   
   --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(15, 23, 42, 0.02);
   --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.05), 0 2px 4px -2px rgba(15, 23, 42, 0.02);
-  --shadow-lg: 0 10px 15px -3px rgba(10, 61, 107, 0.08), 0 4px 6px -4px rgba(10, 61, 107, 0.04);
+  --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.05), 0 4px 6px -4px rgba(15, 23, 42, 0.02);
   
   --font-sans: 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
+  
+  --sidebar-width: 300px;
 }
 
-*{margin:0;padding:0;box-sizing:border-box;font-family:var(--font-sans);}
-html{scroll-behavior:smooth;}
-body{background:var(--bg);color:var(--text-main);line-height:1.6;overflow-x:hidden;}
-a{text-decoration:none;color:inherit;}
-img{max-width:100%;display:block;}
-
-/* SCROLLBAR */
-::-webkit-scrollbar{width:8px;height:8px;}
-::-webkit-scrollbar-track{background:transparent;}
-::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:10px;}
-::-webkit-scrollbar-thumb:hover{background:#94A3B8;}
-
-/* ANIMATIONS */
-.fade-up{opacity:0;transform:translateY(28px);transition:opacity 0.7s ease,transform 0.7s ease;}
-.fade-up.visible{opacity:1;transform:translateY(0);}
-.fade-in{opacity:0;transition:opacity 0.6s ease;}
-.fade-in.visible{opacity:1;}
-
-/* CONTAINER */
-.container{max-width:1140px;margin:0 auto;padding:0 24px;}
-
-/* BUTTONS */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 24px;border:none;border-radius:var(--radius-sm);font-size:14px;font-weight:600;cursor:pointer;transition:all 0.2s;box-shadow:var(--shadow-sm);}
-.btn-primary{background:var(--primary);color:#fff;}
-.btn-primary:hover{background:var(--primary-dark);transform:translateY(-1px);box-shadow:var(--shadow-md);}
-.btn-accent{background:var(--accent);color:#fff;}
-.btn-accent:hover{background:var(--accent-dark);transform:translateY(-1px);}
-.btn-outline{background:var(--surface);border:1.5px solid var(--border);color:var(--text-main);}
-.btn-outline:hover{background:var(--primary-light);border-color:var(--primary);color:var(--primary);}
-.btn-ghost{background:transparent;color:var(--text-secondary);box-shadow:none;}
-.btn-ghost:hover{background:var(--border-light);color:var(--text-main);}
-.btn:disabled{opacity:0.5;cursor:not-allowed;transform:none !important;box-shadow:none;}
-.btn-lg{padding:16px 32px;font-size:15px;border-radius:var(--radius-md);}
-.btn-sm{padding:8px 16px;font-size:13px;}
-
-/* ICON */
-.icon{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;}
-.icon-lg{width:28px;height:28px;}
-
-/* HEADER / NAV */
-header{position:fixed;top:0;width:100%;z-index:500;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);transition:box-shadow 0.3s;}
-header.scrolled{box-shadow:var(--shadow-sm);}
-.nav{display:flex;align-items:center;justify-content:space-between;height:72px;}
-.logo{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:700;color:var(--primary);letter-spacing:-0.5px;}
-.logo-icon{width:36px;height:36px;background:var(--primary);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;}
-.logo-icon svg{stroke:#fff;width:20px;height:20px;}
-.nav-links{display:flex;align-items:center;gap:4px;}
-.nav-link{padding:8px 14px;border-radius:var(--radius-sm);font-size:14px;font-weight:500;color:var(--text-secondary);transition:all 0.2s;}
-.nav-link:hover{color:var(--primary);background:var(--primary-light);}
-.nav-actions{display:flex;align-items:center;gap:12px;}
-.lang-btn{display:flex;align-items:center;gap:6px;padding:8px 12px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface);font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;color:var(--text-main);}
-.lang-btn:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-light);}
-.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;}
-.hamburger span{display:block;width:22px;height:2px;background:var(--text-main);border-radius:2px;transition:all 0.3s;}
-@media(max-width:900px){
-  .nav-links{display:none;}
-  .hamburger{display:flex;}
-  .mobile-menu{display:flex;flex-direction:column;gap:4px;padding:16px 24px 20px;border-top:1px solid var(--border);background:var(--surface);}
+body {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--text-main);
+  font-size: 14px;
+  line-height: 1.5;
+  height: 100vh;
+  overflow: hidden; /* Prevent body scroll, layout handles it */
+  display: flex;
 }
-.mobile-menu{display:none;}
 
-/* HERO */
-.hero{padding:140px 0 80px;position:relative;background:var(--surface);border-bottom:1px solid var(--border);}
-.hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
-@media(max-width:900px){.hero-inner{grid-template-columns:1fr;text-align:center;gap:40px;}.hero-visual{order:-1;}.hero{padding:120px 0 60px;}}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--accent-soft);color:var(--accent-dark);padding:6px 14px;border-radius:100px;font-size:12px;font-weight:700;margin-bottom:24px;letter-spacing:0.05em;text-transform:uppercase;}
-.hero-eyebrow::before{content:'';width:6px;height:6px;background:var(--accent);border-radius:50%;animation:pulse 2s infinite;}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.5;transform:scale(0.8);}}
-.hero h1{font-size:clamp(36px,5vw,52px);font-weight:700;line-height:1.15;letter-spacing:-1.5px;margin-bottom:24px;color:var(--text-main);}
-.hero h1 span{color:var(--primary);}
-.hero-sub{font-size:16px;color:var(--text-secondary);margin-bottom:40px;line-height:1.7;}
-.hero-actions{display:flex;gap:14px;flex-wrap:wrap;}
-@media(max-width:900px){.hero-actions{justify-content:center;}}
-.hero-visual{position:relative;}
-.hero-card{background:var(--bg);border-radius:var(--radius-xl);padding:32px;box-shadow:var(--shadow-lg);border:1px solid var(--border);}
-.hero-card-img{width:100%;border-radius:var(--radius-lg);overflow:hidden;aspect-ratio:4/3;background:var(--border-light);margin-bottom:20px;position:relative;}
-.hero-card-img img{width:100%;height:100%;object-fit:cover;}
-.floating-chip{position:absolute;background:var(--surface);border-radius:var(--radius-md);padding:12px 16px;box-shadow:var(--shadow-md);display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;border:1px solid var(--border);}
-.chip-1{top:-20px;right:20px;color:var(--green);}
-.chip-2{bottom:60px;right:-30px;color:var(--primary);}
+/* Custom Scrollbar for Desktop */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
 
-/* SECTIONS */
-section{padding:96px 0;}
-.section-label{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--primary);margin-bottom:12px;}
-.section-title{font-size:clamp(28px,4vw,36px);font-weight:700;letter-spacing:-1px;margin-bottom:16px;}
-.section-sub{font-size:16px;color:var(--text-secondary);max-width:600px;}
-
-/* FEATURES */
-.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px;}
-@media(max-width:900px){.features-grid{grid-template-columns:1fr;}}
-.feature-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:32px;transition:all 0.3s;box-shadow:var(--shadow-sm);}
-.feature-card:hover{border-color:var(--primary-light);box-shadow:var(--shadow-md);transform:translateY(-4px);}
-.feature-icon{width:48px;height:48px;background:var(--primary-light);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;margin-bottom:20px;color:var(--primary);}
-.feature-card h3{font-size:16px;font-weight:700;margin-bottom:8px;color:var(--text-main);}
-.feature-card p{color:var(--text-secondary);font-size:14px;line-height:1.6;}
-
-/* HOW IT WORKS */
-.how-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-top:64px;}
-@media(max-width:900px){.how-grid{grid-template-columns:1fr;gap:48px;}}
-.steps-list{display:flex;flex-direction:column;gap:32px;}
-.step-item{display:flex;gap:20px;align-items:flex-start;}
-.step-num{width:40px;height:40px;border-radius:10px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0;box-shadow:var(--shadow-sm);}
-.step-body h4{font-size:16px;font-weight:700;margin-bottom:4px;color:var(--text-main);}
-.step-body p{color:var(--text-secondary);font-size:14px;line-height:1.6;}
-
-/* CTA BANNER */
-.cta-banner{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);border-radius:var(--radius-xl);padding:64px;display:flex;align-items:center;justify-content:space-between;gap:40px;box-shadow:var(--shadow-lg);}
-@media(max-width:768px){.cta-banner{flex-direction:column;text-align:center;padding:48px 32px;}}
-.cta-banner h2{font-size:clamp(24px,3vw,32px);font-weight:700;color:#fff;margin-bottom:12px;letter-spacing:-0.5px;}
-.cta-banner p{color:rgba(255,255,255,0.8);font-size:15px;}
-.cta-banner-actions{display:flex;gap:14px;flex-shrink:0;flex-wrap:wrap;}
-@media(max-width:768px){.cta-banner-actions{justify-content:center;}}
-
-/* FOOTER */
-footer{background:var(--surface);padding:64px 0 32px;border-top:1px solid var(--border);}
-.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:48px;margin-bottom:48px;}
-@media(max-width:768px){.footer-grid{grid-template-columns:1fr;gap:32px;}}
-.footer-brand p{font-size:14px;color:var(--text-secondary);line-height:1.6;margin-top:16px;max-width:300px;}
-.footer-col h4{color:var(--text-main);font-size:14px;font-weight:700;margin-bottom:16px;text-transform:uppercase;letter-spacing:0.05em;}
-.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
-.footer-col ul li a{font-size:14px;color:var(--text-secondary);transition:color 0.2s;}
-.footer-col ul li a:hover{color:var(--primary);}
-.footer-bottom{border-top:1px solid var(--border);padding-top:28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--text-muted);}
-
-/* ========================================
-   APP OVERLAY (TCX DASHBOARD STYLE)
-======================================== */
-#app-overlay{position:fixed;inset:0;z-index:1000;background:var(--bg);display:none;flex-direction:column;overflow-y:auto;}
-#app-overlay.open{display:flex;}
-
-.app-topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 32px;height:72px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;box-shadow:var(--shadow-sm);}
-.app-progress-outer{flex:1;max-width:400px;margin:0 40px;}
-.progress-track{height:6px;background:var(--border-light);border-radius:3px;overflow:hidden;}
-.progress-fill{height:100%;background:var(--primary);border-radius:3px;transition:width 0.5s cubic-bezier(0.4,0,0.2,1);}
-.progress-label{font-size:11px;font-weight:600;color:var(--text-muted);margin-top:6px;text-transform:uppercase;letter-spacing:0.05em;}
-
-.app-body{flex:1;max-width:800px;width:100%;margin:0 auto;padding:48px 24px 80px;}
-
-/* STEP PANELS */
-.step-panel{display:none;flex-direction:column;animation:fadeSlide 0.4s ease;}
-.step-panel.active{display:flex;}
-@keyframes fadeSlide{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
-
-.step-header{margin-bottom:32px;}
-.step-header h2{font-size:clamp(24px,3.5vw,32px);font-weight:700;letter-spacing:-1px;margin-bottom:8px;color:var(--text-main);}
-.step-header p{color:var(--text-secondary);font-size:15px;}
-
-/* SYMPTOM GRID */
-.symptom-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin:24px 0;}
-.symp-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px 20px;cursor:pointer;transition:all 0.2s;position:relative;text-align:center;box-shadow:var(--shadow-sm);}
-.symp-card:hover{border-color:var(--primary-light);box-shadow:var(--shadow-md);transform:translateY(-2px);}
-.symp-card.selected{border-color:var(--primary);background:var(--primary-light);box-shadow:0 0 0 1px var(--primary);}
-.symp-icon{width:48px;height:48px;border-radius:12px;background:var(--bg);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;transition:all 0.2s;color:var(--text-secondary);}
-.symp-card.selected .symp-icon{background:var(--primary);color:#fff;}
-.symp-label{font-size:14px;font-weight:600;color:var(--text-main);}
-.symp-check{position:absolute;top:16px;right:16px;width:20px;height:20px;border-radius:6px;border:1.5px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
-.symp-card.selected .symp-check{background:var(--primary);border-color:var(--primary);}
-
-/* QUESTION STEP */
-.q-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);padding:40px;margin-bottom:24px;box-shadow:var(--shadow-sm);}
-.q-meta{font-size:11px;color:var(--primary);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:16px;}
-.q-text{font-size:clamp(18px,2.5vw,22px);font-weight:700;letter-spacing:-0.5px;line-height:1.4;color:var(--text-main);}
-.ans-list{display:flex;flex-direction:column;gap:12px;}
-.ans-btn{display:flex;align-items:center;gap:16px;width:100%;padding:16px 24px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);cursor:pointer;transition:all 0.2s;font-size:15px;text-align:left;box-shadow:var(--shadow-sm);}
-.ans-btn:hover{border-color:var(--primary-light);box-shadow:var(--shadow-md);transform:translateY(-1px);}
-.ans-btn .ans-icon{width:40px;height:40px;border-radius:10px;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.ans-btn.yes:hover{background:var(--primary-light);border-color:var(--primary);}
-.ans-btn.yes:hover .ans-icon{background:var(--primary);color:#fff;}
-.ans-btn.no:hover{background:var(--accent-soft);border-color:var(--accent);}
-.ans-btn.no:hover .ans-icon{background:var(--accent);color:#fff;}
-.ans-btn.unsure:hover{background:var(--amber-soft);border-color:var(--amber);}
-.ans-btn.unsure:hover .ans-icon{background:var(--amber);color:#fff;}
-.ans-label{font-weight:700;color:var(--text-main);display:block;margin-bottom:2px;}
-.ans-sub{font-size:12px;color:var(--text-secondary);}
-
-/* RESULT STEP */
-.result-banner{border-radius:var(--radius-xl);padding:32px;margin-bottom:32px;display:flex;align-items:flex-start;gap:24px;box-shadow:var(--shadow-sm);}
-.result-banner.urgent{background:var(--accent-soft);border:1px solid rgba(232,50,10,0.2);}
-.result-banner.monitor{background:var(--green-soft);border:1px solid rgba(12,107,63,0.2);}
-.result-icon{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.result-banner.urgent .result-icon{background:var(--accent);color:#fff;}
-.result-banner.monitor .result-icon{background:var(--green);color:#fff;}
-.result-title{font-size:20px;font-weight:700;margin-bottom:8px;letter-spacing:-0.5px;}
-.result-banner.urgent .result-title{color:var(--accent-dark);}
-.result-banner.monitor .result-title{color:var(--green-hover);}
-.result-desc{font-size:14px;color:var(--text-secondary);line-height:1.6;}
-
-.result-reco{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:16px 20px;margin-bottom:12px;display:flex;align-items:flex-start;gap:16px;box-shadow:var(--shadow-sm);}
-.reco-num{width:28px;height:28px;border-radius:8px;background:var(--primary-light);color:var(--primary);font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.reco-text strong{font-size:14px;font-weight:700;display:block;margin-bottom:2px;color:var(--text-main);}
-.reco-text p{font-size:13px;color:var(--text-secondary);}
-
-/* TCX CLINIC LISTING UI */
-.clinic-section-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border);}
-.gps-banner{background:var(--primary-light);border:1px solid rgba(10,61,107,0.1);border-radius:var(--radius-sm);padding:12px 16px;display:flex;align-items:center;gap:12px;margin-bottom:24px;}
-.gps-banner p{font-size:13px;font-weight:500;color:var(--primary);}
-
-.clinic-row{display:flex;align-items:center;justify-content:space-between;padding:16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);margin-bottom:12px;transition:all 0.2s;box-shadow:var(--shadow-sm);}
-.clinic-row:hover{border-color:var(--primary-light);box-shadow:var(--shadow-md);transform:translateY(-1px);}
-.clinic-info{display:flex;align-items:center;gap:16px;flex:1;min-width:0;}
-.clinic-avatar{width:44px;height:44px;border-radius:12px;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
-.clinic-details{display:flex;flex-direction:column;gap:4px;overflow:hidden;}
-.clinic-name{font-weight:700;font-size:14px;color:var(--text-main);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.clinic-meta{display:flex;align-items:center;gap:8px;font-size:12px;}
-.badge-dist{padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;background:var(--primary-light);color:var(--primary);border:1px solid rgba(10,61,107,0.1);white-space:nowrap;}
-.badge-dist.unknown{background:var(--border-light);color:var(--text-secondary);border-color:transparent;}
-
-.clinic-action{display:flex;align-items:center;gap:16px;flex-shrink:0;}
-.clinic-action .btn-call{background:var(--surface);border:1px solid var(--border);color:var(--text-main);font-size:12px;padding:8px 16px;}
-.clinic-action .btn-call:hover{background:var(--primary);border-color:var(--primary);color:#fff;}
-
-/* NAV BOTTOM */
-.step-footer{display:flex;justify-content:space-between;align-items:center;margin-top:40px;padding-top:24px;border-top:1px solid var(--border);}
-
-@media(max-width:900px){
-  section{padding:64px 0;}
-  .app-progress-outer{display:none;}
-  .app-topbar{padding:0 20px;}
-  .app-body{padding:32px 16px 60px;}
-  .clinic-row{flex-direction:column;align-items:flex-start;gap:16px;}
-  .clinic-action{width:100%;justify-content:space-between;}
+/* ── SPLASH SCREEN (PERFECT UI) ──────────────── */
+#splash-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--primary-dark);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s;
 }
-@media(max-width:600px){
-  .symptom-grid{grid-template-columns:repeat(2,1fr);}
+#splash-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+.splash-content { text-align: center; animation: slideUpFade 1s ease-out forwards; }
+.splash-logo-box {
+  width: 80px; height: 80px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: var(--radius-xl);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 40px; margin: 0 auto 24px;
+  box-shadow: 0 0 40px rgba(232, 50, 10, 0.2);
+  position: relative;
+}
+.splash-logo-box::after {
+  content: ''; position: absolute; inset: -4px;
+  border-radius: inherit; border: 2px solid transparent;
+  border-top-color: var(--accent);
+  animation: spin 1.5s linear infinite;
+}
+.splash-title { color: #fff; font-size: 28px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+.splash-subtitle { color: rgba(255, 255, 255, 0.6); font-size: 15px; font-weight: 400; letter-spacing: 0.05em; text-transform: uppercase; }
+
+.loading-bar-container {
+  width: 240px; height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px; margin: 40px auto 0;
+  overflow: hidden;
+}
+.loading-bar-fill {
+  height: 100%; width: 0%;
+  background: var(--accent);
+  border-radius: 4px;
+  transition: width 1.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes spin { 100% { transform: rotate(360deg); } }
+@keyframes slideUpFade { 
+  0% { opacity: 0; transform: translateY(20px); } 
+  100% { opacity: 1; transform: translateY(0); } 
+}
+
+/* ── LAYOUT ARCHITECTURE ─────────────────────── */
+#app-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transform: scale(0.98);
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+#app-container.loaded { opacity: 1; transform: scale(1); }
+
+/* ── SIDEBAR ─────────────────────────────────── */
+.sidebar {
+  width: var(--sidebar-width);
+  background: var(--primary);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  border-right: 1px solid rgba(255,255,255,0.1);
+  z-index: 10;
+}
+.sidebar-header {
+  padding: 32px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.brand-icon {
+  width: 48px; height: 48px;
+  background: linear-gradient(135deg, var(--accent) 0%, #C0200A 100%);
+  border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+  box-shadow: 0 4px 12px rgba(232, 50, 10, 0.3);
+}
+.brand-text h1 { font-size: 18px; font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; }
+.brand-text p { font-size: 12px; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-top: 4px; letter-spacing: 0.05em;}
+
+.priority-section { padding: 0 24px 24px; flex-grow: 1; overflow-y: auto; }
+.section-label {
+  font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.5);
+  text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+.section-label::before { content:''; width: 6px; height: 6px; background: #FFD166; border-radius: 50%; box-shadow: 0 0 8px rgba(255,209,102,0.6); }
+
+.priority-card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  padding: 20px; margin-bottom: 16px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+}
+.priority-card:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+.p-icon { font-size: 32px; margin-bottom: 12px; }
+.p-title { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.8); text-transform: uppercase; letter-spacing: 0.05em; }
+.p-num { font-family: var(--font-mono); font-size: 32px; font-weight: 600; margin-top: 4px; color: #fff; }
+.p-action {
+  margin-top: 16px; padding: 8px 24px;
+  background: rgba(255,255,255,0.1); border-radius: 100px;
+  color: #fff; text-decoration: none; font-size: 12px; font-weight: 600;
+  transition: background 0.2s; width: 100%;
+}
+.priority-card:hover .p-action { background: var(--accent); }
+
+.sidebar-footer { padding: 24px; border-top: 1px solid rgba(255,255,255,0.05); font-size: 11px; color: rgba(255,255,255,0.4); text-align: center; }
+
+/* ── MAIN CONTENT AREA ───────────────────────── */
+.main-area { flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; background: var(--bg); }
+
+/* TOP HEADER */
+.top-header {
+  height: 80px; background: var(--surface); border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px; flex-shrink: 0;
+}
+.page-title { font-size: 20px; font-weight: 600; color: var(--text-main); }
+
+.search-container { position: relative; width: 400px; }
+.search-icon {
+  position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+  color: var(--text-muted); pointer-events: none;
+}
+#global-search {
+  width: 100%; padding: 12px 16px 12px 44px;
+  font-family: var(--font-sans); font-size: 14px;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius-xl); color: var(--text-main);
+  transition: all 0.2s ease; outline: none;
+}
+#global-search::placeholder { color: var(--text-muted); }
+#global-search:focus { background: var(--surface); border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-light); }
+.search-shortcut {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);
+  background: var(--surface); border: 1px solid var(--border); padding: 2px 6px; border-radius: 4px;
+}
+
+.user-profile { display: flex; align-items: center; gap: 12px; }
+.avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; border: 1px solid var(--border); }
+.user-info { display: flex; flex-direction: column; }
+.user-name { font-size: 14px; font-weight: 600; color: var(--text-main); }
+.user-role { font-size: 12px; color: var(--text-secondary); }
+
+/* DASHBOARD CONTENT */
+.dashboard-content { padding: 40px; overflow-y: auto; flex-grow: 1; }
+
+.section-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 24px; }
+.section-header h2 { font-size: 18px; font-weight: 600; color: var(--text-main); }
+.section-header p { font-size: 14px; color: var(--text-secondary); margin-top: 4px; }
+
+#no-results {
+  display: none; text-align: center; padding: 80px 20px;
+  background: var(--surface); border: 1px dashed var(--border); border-radius: var(--radius-lg);
+}
+#no-results span { font-size: 48px; display: block; margin-bottom: 16px; opacity: 0.5; }
+#no-results h3 { font-size: 18px; color: var(--text-main); margin-bottom: 8px; }
+#no-results p { color: var(--text-secondary); }
+
+/* GRID LAYOUT (PC FORMAT) */
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+  gap: 24px;
+  align-items: start;
+}
+
+/* CARDS */
+.category-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.category-card:hover { box-shadow: var(--shadow-md); }
+
+.card-header {
+  padding: 20px 24px; border-bottom: 1px solid var(--border-light);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.card-title-wrap { display: flex; align-items: center; gap: 12px; }
+.cat-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+.card-title { font-size: 16px; font-weight: 600; color: var(--text-main); }
+.item-count { font-size: 12px; font-weight: 500; color: var(--text-muted); background: var(--bg); padding: 4px 10px; border-radius: 20px; border: 1px solid var(--border); }
+
+/* Theming category headers */
+.cat-emergency .cat-icon { background: var(--accent-soft); color: var(--accent); }
+.cat-health .cat-icon { background: var(--green-soft); color: var(--green); }
+.cat-water .cat-icon { background: var(--amber-soft); color: var(--amber); }
+.cat-community .cat-icon { background: var(--primary-light); color: var(--primary); }
+
+.card-body { padding: 12px; }
+
+/* ENTRIES (TABLE/LIST STYLE) */
+.entry {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px; border-radius: var(--radius-md);
+  transition: background 0.15s ease;
+}
+.entry:hover { background: var(--bg); }
+
+.entry-info { display: flex; align-items: center; gap: 16px; flex: 1; min-width: 0; }
+.entry-avatar { width: 40px; height: 40px; border-radius: 10px; background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; box-shadow: var(--shadow-sm); }
+
+.entry-details { display: flex; flex-direction: column; gap: 4px; overflow: hidden; }
+.entry-name { font-weight: 600; font-size: 14px; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.entry-meta { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-secondary); }
+.badge { padding: 2px 8px; border-radius: 6px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+.badge-247 { background: var(--green-soft); color: var(--green-hover); }
+.badge-day { background: var(--amber-soft); color: var(--amber); }
+
+.entry-action { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
+.entry-number { font-family: var(--font-mono); font-size: 14px; font-weight: 500; color: var(--text-secondary); }
+.btn-call {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 16px; border-radius: var(--radius-sm);
+  font-size: 13px; font-weight: 600; text-decoration: none;
+  background: var(--surface); border: 1px solid var(--border); color: var(--text-main);
+  transition: all 0.2s; box-shadow: var(--shadow-sm); cursor: pointer;
+}
+.btn-call:hover { background: var(--primary-light); border-color: var(--primary); color: var(--primary); }
+.btn-call svg { width: 14px; height: 14px; }
+
+/* Highlight for search terms */
+mark { background: #FEF08A; color: #854D0E; padding: 0 2px; border-radius: 2px; }
+
+/* Responsiveness */
+@media (max-width: 1200px) {
+  .categories-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 900px) {
+  .sidebar { width: 260px; }
+  .top-header { padding: 0 24px; }
+  .search-container { width: 300px; }
 }
 </style>
 </head>
+
 <body>
 
-<header id="main-header">
-  <div class="container nav">
-    <a href="#" class="logo">
-      <div class="logo-icon">
-        <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-      </div>
-      <span data-i18n="logo">TCX Healthcare</span>
-    </a>
-
-    <nav class="nav-links">
-      <a href="#features" class="nav-link" data-i18n="navFeatures">Capabilities</a>
-      <a href="#how" class="nav-link" data-i18n="navHow">Protocol</a>
-      <a href="#clinics-section" class="nav-link" data-i18n="navClinics">Network</a>
-    </nav>
-
-    <div class="nav-actions">
-      <button class="lang-btn" onclick="App.toggleLang()" id="lang-btn">
-        <svg class="icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-        <span id="lang-label">RW</span>
-      </button>
-      <button class="btn btn-primary btn-sm" onclick="App.open()" data-i18n="navCTA">Run Triage</button>
-      <div class="hamburger" onclick="App.toggleMobileMenu()">
-        <span></span><span></span><span></span>
-      </div>
+<div id="splash-screen">
+  <div class="splash-content">
+    <div class="splash-logo-box">🚨</div>
+    <h1 class="splash-title">Emergency Directory</h1>
+    <p class="splash-subtitle">TCX Healthcare · Kigali</p>
+    <div class="loading-bar-container">
+      <div class="loading-bar-fill" id="progress-fill"></div>
     </div>
-  </div>
-  <div class="mobile-menu" id="mobile-menu">
-    <a href="#features" class="nav-link" data-i18n="navFeatures">Capabilities</a>
-    <a href="#how" class="nav-link" data-i18n="navHow">Protocol</a>
-    <a href="#clinics-section" class="nav-link" data-i18n="navClinics">Network</a>
-  </div>
-</header>
-
-<section class="hero">
-  <div class="container hero-inner">
-    <div class="fade-up">
-      <div class="hero-eyebrow" data-i18n="heroEyebrow">Clinical Assessment Engine</div>
-      <h1 data-i18n="heroTitle">Intelligent Triage <span>Routing System</span></h1>
-      <p class="hero-sub" data-i18n="heroSub">Deploy offline-capable, clinical-grade symptom analysis. Calculate risk levels, output actionable directives, and automatically route to the nearest facility via native GPS.</p>
-      <div class="hero-actions">
-        <button class="btn btn-primary btn-lg" onclick="App.open()">
-          <svg class="icon" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-          <span data-i18n="heroCTA">Launch Diagnostic UI</span>
-        </button>
-        <a href="#how" class="btn btn-outline btn-lg" data-i18n="heroLearn">View Architecture</a>
-      </div>
-    </div>
-
-    <div class="hero-visual fade-in">
-      <div class="hero-card">
-        <div class="hero-card-img">
-          <img src="https://images.unsplash.com/photo-1516549655169-df83a0774514?w=600&q=80" alt="Medical Technology" onerror="this.style.display='none'">
-        </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;">
-          <div>
-            <p style="font-size:11px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:0.05em;" data-i18n="cardLabel">System Status</p>
-            <p style="font-size:15px;font-weight:700;">Engine Online & Active</p>
-          </div>
-          <span class="badge" style="background:var(--green-soft);color:var(--green-hover);border:1px solid rgba(12,107,63,0.1);">Secure</span>
-        </div>
-      </div>
-      <div class="floating-chip chip-1">
-        <svg class="icon" style="width:16px;height:16px;stroke:currentColor;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-        <span data-i18n="chip1">End-to-End Encryption</span>
-      </div>
-      <div class="floating-chip chip-2">
-        <svg class="icon" style="width:16px;height:16px;stroke:currentColor;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
-        <span data-i18n="chip2">Zero-Latency Edge Compute</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="features">
-  <div class="container">
-    <div class="fade-up" style="max-width:600px;">
-      <p class="section-label" data-i18n="featLabel">Core Capabilities</p>
-      <h2 class="section-title" data-i18n="featTitle">Enterprise-Grade Triage</h2>
-      <p class="section-sub" data-i18n="featSub">A robust decision tree architecture integrated with geolocation routing to optimize patient flow.</p>
-    </div>
-    <div class="features-grid">
-      <div class="feature-card fade-up">
-        <div class="feature-icon"><svg class="icon-lg" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
-        <h3 data-i18n="feat1Title">Dynamic Symptom Modeling</h3>
-        <p data-i18n="feat1Desc">Accepts multi-variable symptom inputs to generate a weighted, non-redundant assessment questionnaire on the fly.</p>
-      </div>
-      <div class="feature-card fade-up" style="transition-delay:0.1s">
-        <div class="feature-icon"><svg class="icon-lg" viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/></svg></div>
-        <h3 data-i18n="feat2Title">Client-Side Haversine Logic</h3>
-        <p data-i18n="feat2Desc">Calculates precise geospatial distances to network nodes entirely on the edge, removing API dependency.</p>
-      </div>
-      <div class="feature-card fade-up" style="transition-delay:0.2s">
-        <div class="feature-icon"><svg class="icon-lg" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-        <h3 data-i18n="feat3Title">Stateless Privacy Protocol</h3>
-        <p data-i18n="feat3Desc">Executes logic securely without database writes. Patient inputs remain strictly within the volatile browser session.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="how" style="background:var(--surface);border-top:1px solid var(--border);">
-  <div class="container">
-    <div class="how-grid">
-      <div class="fade-up">
-        <p class="section-label" data-i18n="howLabel">Execution Protocol</p>
-        <h2 class="section-title" data-i18n="howTitle">Assessment Workflow</h2>
-        <div class="steps-list" style="margin-top:40px;">
-          <div class="step-item">
-            <div class="step-num">01</div>
-            <div class="step-body">
-              <h4 data-i18n="step1H">Input Parameters</h4>
-              <p data-i18n="step1P">Users select categorical physiological indicators. The system aggregates these variables into an initial data structure.</p>
-            </div>
-          </div>
-          <div class="step-item">
-            <div class="step-num">02</div>
-            <div class="step-body">
-              <h4 data-i18n="step2H">Algorithmic Interrogation</h4>
-              <p data-i18n="step2P">A tailored array of clinical queries is presented. Responses are assigned numerical weights based on risk probability.</p>
-            </div>
-          </div>
-          <div class="step-item">
-            <div class="step-num">03</div>
-            <div class="step-body">
-              <h4 data-i18n="step3H">Output & Routing</h4>
-              <p data-i18n="step3P">The engine calculates a cumulative risk score, outputs a formatted directive, and ranks network facilities by proximity.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="fade-in" style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-xl);padding:40px;box-shadow:var(--shadow-md);">
-        <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;">
-           <div style="width:48px;height:48px;background:var(--primary);border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;">
-             <svg class="icon" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-           </div>
-           <div>
-             <h3 style="font-size:16px;font-weight:700;">TCX Logic Core</h3>
-             <p style="font-size:13px;color:var(--text-secondary);">v2.4.0 Engine Active</p>
-           </div>
-        </div>
-        <p style="font-family:var(--font-mono);font-size:13px;color:var(--text-secondary);background:var(--surface);padding:16px;border-radius:var(--radius-sm);border:1px solid var(--border);">
-          <span style="color:var(--primary);">const</span> riskLevel = calculateScore(weights);<br>
-          <span style="color:var(--primary);">if</span> (riskLevel >= threshold) {<br>
-          &nbsp;&nbsp;dispatchUrgentProtocol();<br>
-          } <span style="color:var(--primary);">else</span> {<br>
-          &nbsp;&nbsp;dispatchMonitorProtocol();<br>
-          }
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="container">
-    <div class="cta-banner fade-up">
-      <div>
-        <h2 data-i18n="ctaTitle">Initialize System Test</h2>
-        <p data-i18n="ctaSub">Experience the client-side triage engine. No data is transmitted during this simulation.</p>
-      </div>
-      <div class="cta-banner-actions">
-        <button class="btn btn-outline btn-lg" onclick="App.open()" style="background:#fff;border-color:#fff;color:var(--primary);">
-          <svg class="icon" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-          <span data-i18n="ctaCTA">Run Diagnostic</span>
-        </button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div class="container">
-    <div class="footer-grid">
-      <div>
-        <div class="logo" style="margin-bottom:12px;">
-          <div class="logo-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
-          <span>TCX Healthcare</span>
-        </div>
-        <p data-i18n="footerDesc">Enterprise software solutions for modern medical routing, triage, and data logistics.</p>
-      </div>
-      <div class="footer-col">
-        <h4 data-i18n="footerProduct">Systems</h4>
-        <ul>
-          <li><a href="#" data-i18n="footerFeatures">Triage Engine</a></li>
-          <li><a href="#" data-i18n="footerAssess">API Documentation</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4 data-i18n="footerCompany">Corporate</h4>
-        <ul>
-          <li><a href="#" data-i18n="footerPrivacy">Security & Compliance</a></li>
-          <li><a href="#" data-i18n="footerContact">Contact Engineering</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>&copy; 2026 TCX Systems. <span data-i18n="footerRights">All rights reserved.</span></p>
-    </div>
-  </div>
-</footer>
-
-<div id="app-overlay">
-  <div class="app-topbar">
-    <div class="logo" style="font-size:16px;">
-      <div class="logo-icon" style="width:28px;height:28px;border-radius:6px;">
-        <svg viewBox="0 0 24 24" style="width:14px;height:14px;"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-      </div>
-      <span data-i18n="logo">TCX Healthcare</span>
-    </div>
-    
-    <div class="app-progress-outer">
-      <div class="progress-track"><div class="progress-fill" id="app-prog-fill" style="width:0%"></div></div>
-      <p class="progress-label" id="app-prog-label"></p>
-    </div>
-    
-    <button class="btn btn-ghost btn-sm" onclick="App.close()">
-      <svg class="icon" style="width:16px;height:16px;" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      <span data-i18n="appClose">Close</span>
-    </button>
-  </div>
-
-  <div class="app-body">
-
-    <div class="step-panel active" id="panel-1">
-      <div class="step-header">
-        <p class="section-label" data-i18n="p1Tag">Parameter Selection</p>
-        <h2 data-i18n="p1Title">Identify Clinical Symptoms</h2>
-        <p data-i18n="p1Sub">Select all relevant physiological indicators to initialize the algorithmic query sequence.</p>
-      </div>
-
-      <div class="symptom-grid" id="symp-grid"></div>
-
-      <div class="step-footer">
-        <p id="symp-count-msg" style="font-size:13px;font-weight:600;color:var(--text-secondary);" data-i18n="sympNone">Awaiting parameters...</p>
-        <button class="btn btn-primary" id="btn-symp-next" disabled onclick="Diag.compileAndStart()">
-          <span data-i18n="btnContinue">Initialize Engine</span>
-          <svg class="icon" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-        </button>
-      </div>
-    </div>
-
-    <div class="step-panel" id="panel-2">
-      <div class="step-header">
-        <p class="section-label" id="q-step-tag">Algorithmic Query</p>
-        <h2 data-i18n="step2H">Data Acquisition</h2>
-      </div>
-
-      <div class="q-card">
-        <p class="q-meta" id="q-meta-label">Category</p>
-        <p class="q-text" id="q-text-main">Loading parameter query...</p>
-      </div>
-
-      <div class="ans-list">
-        <button class="ans-btn yes" onclick="Diag.answer(2)">
-          <div class="ans-icon"><svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-          <div><span class="ans-label" data-i18n="ansYes">Affirmative</span><span class="ans-sub" data-i18n="ansYesSub">Condition is present</span></div>
-        </button>
-        <button class="ans-btn no" onclick="Diag.answer(0)">
-          <div class="ans-icon"><svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
-          <div><span class="ans-label" data-i18n="ansNo">Negative</span><span class="ans-sub" data-i18n="ansNoSub">Condition is absent</span></div>
-        </button>
-        <button class="ans-btn unsure" onclick="Diag.answer(1)">
-          <div class="ans-icon"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
-          <div><span class="ans-label" data-i18n="ansUnsure">Inconclusive</span><span class="ans-sub" data-i18n="ansUnsureSub">Unable to confirm</span></div>
-        </button>
-      </div>
-
-      <div class="step-footer">
-        <button class="btn btn-outline btn-sm" onclick="Diag.prevQuestion()">
-          <svg class="icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-          <span data-i18n="btnBack">Revert</span>
-        </button>
-        <p style="font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;" id="q-skip-note" data-i18n="qSkipNote">Input required</p>
-      </div>
-    </div>
-
-    <div class="step-panel" id="panel-3">
-      <div class="step-header">
-        <p class="section-label" data-i18n="p3Tag">Engine Output</p>
-        <h2 data-i18n="p3Title">Computed Directives</h2>
-      </div>
-
-      <div id="result-banner" class="result-banner monitor">
-        <div class="result-icon">
-          <svg class="icon-lg" id="result-icon-svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-        </div>
-        <div>
-          <h3 class="result-title" id="result-title">Standard Observation</h3>
-          <p class="result-desc" id="result-desc">Processing...</p>
-        </div>
-      </div>
-
-      <h3 style="font-size:14px;font-weight:700;margin-bottom:16px;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-secondary);" data-i18n="recoTitle">Protocol Guidelines</h3>
-      <div id="reco-list"></div>
-
-      <div style="margin-top:48px;">
-        <div class="clinic-section-header">
-          <div>
-            <h3 style="font-size:18px;font-weight:700;letter-spacing:-0.5px;" data-i18n="clinicsNear">Network Routing</h3>
-            <p id="gps-status-msg" style="font-size:13px;color:var(--text-secondary);margin-top:2px;" data-i18n="gpsDefault">Geospatial data inactive</p>
-          </div>
-          <button class="btn btn-outline" onclick="Diag.locate()">
-            <svg class="icon" style="width:16px;height:16px;" viewBox="0 0 24 24"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
-            <span data-i18n="btnLocate">Fetch Location</span>
-          </button>
-        </div>
-
-        <div class="gps-banner">
-          <svg class="icon" style="width:16px;height:16px;flex-shrink:0;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
-          <p data-i18n="gpsTip">Initialize location fetch to execute local Haversine calculation against TCX node database.</p>
-        </div>
-
-        <div id="clinic-list-results"></div>
-      </div>
-
-      <div class="step-footer" style="justify-content:flex-end;gap:16px;">
-        <button class="btn btn-ghost" onclick="App.close()" data-i18n="btnClose">Exit Terminal</button>
-        <button class="btn btn-outline" onclick="Diag.reset()" data-i18n="btnNewAssess">Flush Data & Restart</button>
-      </div>
-    </div>
-
   </div>
 </div>
 
-<script>
-/* ============================================================
-   TCX DICTIONARY — English + Kinyarwanda
-============================================================ */
-const T = {
-  en: {
-    logo:"TCX Healthcare", navFeatures:"Capabilities", navHow:"Protocol", navClinics:"Network",
-    navCTA:"Run Triage",
-    heroEyebrow:"Clinical Assessment Engine",
-    heroTitle:"Intelligent Triage Routing System",
-    heroSub:"Deploy offline-capable, clinical-grade symptom analysis. Calculate risk levels, output actionable directives, and automatically route to the nearest facility via native GPS.",
-    heroCTA:"Launch Diagnostic UI", heroLearn:"View Architecture",
-    cardLabel:"System Status", chip1:"End-to-End Encryption", chip2:"Zero-Latency Edge Compute",
-    featLabel:"Core Capabilities", featTitle:"Enterprise-Grade Triage", featSub:"A robust decision tree architecture integrated with geolocation routing to optimize patient flow.",
-    feat1Title:"Dynamic Symptom Modeling", feat1Desc:"Accepts multi-variable symptom inputs to generate a weighted, non-redundant assessment questionnaire on the fly.",
-    feat2Title:"Client-Side Haversine Logic", feat2Desc:"Calculates precise geospatial distances to network nodes entirely on the edge, removing API dependency.",
-    feat3Title:"Stateless Privacy Protocol", feat3Desc:"Executes logic securely without database writes. Patient inputs remain strictly within the volatile browser session.",
-    howLabel:"Execution Protocol", howTitle:"Assessment Workflow",
-    step1H:"Input Parameters", step1P:"Users select categorical physiological indicators. The system aggregates these variables into an initial data structure.",
-    step2H:"Algorithmic Interrogation", step2P:"A tailored array of clinical queries is presented. Responses are assigned numerical weights based on risk probability.",
-    step3H:"Output & Routing", step3P:"The engine calculates a cumulative risk score, outputs a formatted directive, and ranks network facilities by proximity.",
-    ctaTitle:"Initialize System Test", ctaSub:"Experience the client-side triage engine. No data is transmitted during this simulation.", ctaCTA:"Run Diagnostic",
-    footerDesc:"Enterprise software solutions for modern medical routing, triage, and data logistics.",
-    footerProduct:"Systems", footerFeatures:"Triage Engine", footerAssess:"API Documentation",
-    footerCompany:"Corporate", footerPrivacy:"Security & Compliance", footerContact:"Contact Engineering", footerRights:"All rights reserved.",
-    appClose:"Close",
-    p1Tag:"Parameter Selection", p1Title:"Identify Clinical Symptoms", p1Sub:"Select all relevant physiological indicators to initialize the algorithmic query sequence.",
-    sympNone:"Awaiting parameters...", btnContinue:"Initialize Engine", btnBack:"Revert",
-    ansYes:"Affirmative", ansYesSub:"Condition is present",
-    ansNo:"Negative", ansNoSub:"Condition is absent",
-    ansUnsure:"Inconclusive", ansUnsureSub:"Unable to confirm",
-    qSkipNote:"Input required",
-    p3Tag:"Engine Output", p3Title:"Computed Directives",
-    recoTitle:"Protocol Guidelines",
-    clinicsNear:"Network Routing", gpsDefault:"Geospatial data inactive",
-    btnLocate:"Fetch Location", gpsTip:"Initialize location fetch to execute local Haversine calculation against TCX node database.",
-    btnNewAssess:"Flush Data & Restart", btnClose:"Exit Terminal",
-    resUrgentTitle:"Priority Dispatch Required",
-    resUrgentDesc:"Computed risk score exceeds standard threshold. Immediate presentation to a clinical facility is advised. Consult routing array below.",
-    resMonitorTitle:"Standard Observation",
-    resMonitorDesc:"Risk factors remain below critical thresholds. Proceed with home-based monitoring and standard recovery protocols.",
-    recoUrgent:["Proceed to the nearest facility denoted below","Avoid unaided transport if experiencing severe trauma","Present this computational output to clinical staff","Refrain from undocumented pharmacological intake"],
-    recoMonitor:["Initiate standard hydration and rest cycles","Monitor thermoregulation every 6-8 hours","Suspend strenuous physical exertion","Re-initialize triage if metrics deteriorate over 48 hours"],
-    distUnknown:"Distance unresolved", gpsActive:"Array sorted by proximity",
-    sympSelCount:(n)=> n===1 ? "1 parameter loaded" : `${n} parameters loaded`,
-    sympFever:"Fever Profile", sympCough:"Respiratory", sympPain:"Acute Pain",
-    sympStomach:"Gastrointestinal", sympHeadache:"Neurological", sympFatigue:"Systemic Fatigue",
-    sympSkin:"Dermatological", sympEyes:"Optical/Vision",
-    qCatFever:"Thermal Assessment", qCatCough:"Pulmonary Assessment", qCatPain:"Nociceptive Assessment",
-    qCatStomach:"Enteric Assessment", qCatHeadache:"Cranial Assessment",
-    qCatFatigue:"Metabolic Status", qCatSkin:"Dermal Status", qCatEyes:"Ocular Status", qCatGeneral:"Systemic Evaluation"
-  },
-  rw: {
-    logo:"TCX Healthcare", navFeatures:"Ubushobozi", navHow:"Uburyo Bikora", navClinics:"Urubuga",
-    navCTA:"Tangira Isuzuma",
-    heroEyebrow:"Ikoranabuhanga ry'Ubuvuzi",
-    heroTitle:"Isuzuma Ryihuse ry'Ubuzima",
-    heroSub:"Koresha isuzuma rigezweho, rikora nta interineti. Menya ingaruka, ubone inama, kandi wiyobore ku ivuriro rikegereye hakoreshejwe GPS.",
-    heroCTA:"Fungura Isuzuma", heroLearn:"Reba Ikoranabuhanga",
-    cardLabel:"Imiterere", chip1:"Umutekano Usesuye", chip2:"Igikora Byihuse Nta Interineti",
-    featLabel:"Ubushobozi bw'Ibanze", featTitle:"Isuzuma Ryo Ku Rwego Rwo Hejuru", featSub:"Imiterere ikomeye ihuza n'ikoranabuhanga rya GPS kugira ngo byorohereze abarwayi.",
-    feat1Title:"Gusuzuma Ibimenyetso byinshi", feat1Desc:"Iyakira ibimenyetso byinshi icyarimwe kugira ngo ikusanye ibibazo byihariye nta gusubiramo.",
-    feat2Title:"Imibare ya Haversine imbere muri Telefone", feat2Desc:"Ibara intera y'amavuriro byuzuye muri telefone yawe, nta gukenera API zo hanze.",
-    feat3Title:"Umutekano w'Ibanga (Stateless)", feat3Desc:"Ikora neza nta kubika amakuru muri data. Ibyo winjiza biguma gusa muri browser yawe.",
-    howLabel:"Uko Bikora", howTitle:"Inzira y'Isuzuma",
-    step1H:"Injiza Ibimenyetso", step1P:"Umurwayi ahitamo ibimenyetso afite. Sisitemu ibikusanya mu makuru y'ibanze.",
-    step2H:"Ibibazo by'Ikomeza", step2P:"Uhabwa urutonde rw'ibibazo bya muganga. Ibisubizo bihabwa agaciro hashingiwe ku ngaruka.",
-    step3H:"Ibisubizo & Icyerekezo", step3P:"Sisitemu ibara amanota y'ingaruka zose, igatanga inama, inatondekanya amavuriro akegereye.",
-    ctaTitle:"Gerageza Sisitemu Nonaha", ctaSub:"Koresha isuzuma imbere muri telefone yawe. Nta makuru yoherezwa hanze.", ctaCTA:"Tangira Isuzuma",
-    footerDesc:"Ikoranabuhanga riyobora mu by'ubuvuzi n'amakuru y'ubuzima agezweho.",
-    footerProduct:"Sisitemu", footerFeatures:"Ikoranabuhanga ry'Isuzuma", footerAssess:"Amabwiriza ya API",
-    footerCompany:"Sosiyete", footerPrivacy:"Umutekano", footerContact:"Twandikire", footerRights:"Uburenganzira bwose burafitwe.",
-    appClose:"Funga",
-    p1Tag:"Ihitamo ry'Ibimenyetso", p1Title:"Erekana Ibimenyetso", p1Sub:"Hitamo ibimenyetso byose ufite kugira ngo sisitemu itegure ibibazo.",
-    sympNone:"Tegereje ibimenyetso...", btnContinue:"Komeza Sisitemu", btnBack:"Subira Inyuma",
-    ansYes:"Yego / Nibyo", ansYesSub:"Iki kibazo kindebaho",
-    ansNo:"Oya / Sibyo", ansNoSub:"Ntabwo kindebaho",
-    ansUnsure:"Simbizi", ansUnsureSub:"Ntabwo mbizi neza",
-    qSkipNote:"Igisubizo kirakenewe",
-    p3Tag:"Ibisubizo bya Sisitemu", p3Title:"Inama Zatanzwe",
-    recoTitle:"Amabwiriza Ngenderwaho",
-    clinicsNear:"Urubuga rw'Amavuriro", gpsDefault:"Amakuru y'aho uri nta yariho",
-    btnLocate:"Shakisha Aho Ndi", gpsTip:"Fungura aho uri kugira ngo sisitemu ibare intera (Haversine) ukurikije amavuriro ya TCX.",
-    btnNewAssess:"Siba Amakuru Utangire Bushya", btnClose:"Sohoka",
-    resUrgentTitle:"Gana Ivuriro Byihutirwa",
-    resUrgentDesc:"Amanota y'ingaruka arenze urugero. Inama nuko ugana ivuriro vuba bishoboka. Reba urutonde hasi.",
-    resMonitorTitle:"Kwirinda no Kuruhuka",
-    resMonitorDesc:"Ingaruka ziri hasi. Komeza kwirinda, uruhuke neza wibereye mu rugo.",
-    recoUrgent:["Gana ivuriro rikegereye riri ku rutonde hasi","Irinde kwitwara niba urembye cyane","Erekana ibi bisubizo kwa muganga","Ntufate imiti itazwi utandikiwe"],
-    recoMonitor:["Fata amazi ahagije kandi uruhuke","Kurikirana ubushyuhe bw'umubiri buri masaa 6-8","Irinde imirimo ivunanye","Ongera ukore isuzuma niba ibimenyetso bikomeje nyuma y'iminsi 2"],
-    distUnknown:"Intera ntizwi", gpsActive:"Bitondetswe hakurikijwe intera",
-    sympSelCount:(n)=> n===1 ? "Igimenyetso 1 cyinjiye" : `Ibimenyetso ${n} byinjiye`,
-    sympFever:"Umuriro", sympCough:"Guhumeka / Inkorora", sympPain:"Ububabare",
-    sympStomach:"Igifu", sympHeadache:"Ubwonko / Umutwe", sympFatigue:"Uburuhe",
-    sympSkin:"Uruhu", sympEyes:"Amaso",
-    qCatFever:"Isuzuma ry'Umuriro", qCatCough:"Isuzuma ryo Guhumeka", qCatPain:"Isuzuma ry'Ububabare",
-    qCatStomach:"Isuzuma ry'Igifu", qCatHeadache:"Isuzuma ry'Umutwe",
-    qCatFatigue:"Imiterere y'Ingufu", qCatSkin:"Imiterere y'Uruhu", qCatEyes:"Imiterere y'Amaso", qCatGeneral:"Isuzuma Rusange"
-  }
-};
+<div id="app-container">
 
-/* ============================================================
-   DATA — Symptoms & Questions
-============================================================ */
-const SYMPTOMS = [
-  { id:'fever',    icon:'<path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/>' },
-  { id:'cough',    icon:'<path d="M12 2v7m0 0c-2.5 0-4 1.5-4 3.5s1.5 3.5 4 3.5m0-7c2.5 0 4 1.5 4 3.5s-1.5 3.5-4 3.5m0 0v5"/>' },
-  { id:'pain',     icon:'<circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/>' },
-  { id:'stomach',  icon:'<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>' },
-  { id:'headache', icon:'<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3m.08 4h.01"/>' },
-  { id:'fatigue',  icon:'<path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48 2.83 2.83M2 12h4m12 0h4"/>' },
-  { id:'skin',     icon:'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>' },
-  { id:'eyes',     icon:'<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>' }
-];
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="brand-icon">🚨</div>
+      <div class="brand-text">
+        <h1>Directory</h1>
+        <p>Kigali Services</p>
+      </div>
+    </div>
 
-const getQuestions = (lang) => ({
-  fever: [
-    { q: lang==='en' ? "Is patient core temperature above 39.5°C (103°F)?" : "Ese ubushyuhe bwawe burenze 39.5°C?", w:4, cat:'qCatFever' },
-    { q: lang==='en' ? "Is there acute rigidity in the cervical/neck region?" : "Ese wumva ijosi ryakomeye cyane?", w:5, cat:'qCatFever' }
-  ],
-  cough: [
-    { q: lang==='en' ? "Is dyspnea (difficulty breathing) present while resting?" : "Ese guhumeka birakugora n'ubwo wibereye hamwe?", w:5, cat:'qCatCough' },
-    { q: lang==='en' ? "Is hemoptysis (coughing up blood) observed?" : "Ese urakorora amaraso?", w:5, cat:'qCatCough' }
-  ],
-  pain: [
-    { q: lang==='en' ? "Does nociceptive pain limit physical mobility?" : "Ese ububabare buranze bugufunga imico?", w:3, cat:'qCatPain' }
-  ],
-  stomach: [
-    { q: lang==='en' ? "Are there signs of gastrointestinal bleeding (dark/bloody stool)?" : "Ese ufite ibirimo amaraso cyangwa bibisi?", w:5, cat:'qCatStomach' }
-  ],
-  headache: [
-    { q: lang==='en' ? "Does the cranial pain involve cognitive confusion or optical changes?" : "Ese kubabara umutwe kuzanye impinduka z'amaso cyangwa gutunga?", w:5, cat:'qCatHeadache' }
-  ],
-  fatigue: [
-    { q: lang==='en' ? "Does standing induce syncope (fainting) or severe vertigo?" : "Ese wumva usibye iyo uhagaze?", w:4, cat:'qCatFatigue' }
-  ],
-  skin: [
-    { q: lang==='en' ? "Is there a rapidly spreading dermal rash combined with thermal fever?" : "Ese ubutwa bugana n'umuriro cyangwa ububabare bw'imikondo?", w:4, cat:'qCatSkin' }
-  ],
-  eyes: [
-    { q: lang==='en' ? "Is there sudden bilateral or unilateral vision loss?" : "Ese wabonye gutura kwa amaso cyangwa amaso adafatika vuba?", w:5, cat:'qCatEyes' }
-  ],
-  general: [
-    { q: lang==='en' ? "Are symptoms resistant to previously administered pharmacologicals?" : "Ese wafashe imiti ariko ntacyo yagufashije?", w:2, cat:'qCatGeneral' },
-    { q: lang==='en' ? "Does the subject have known pre-existing systemic vulnerabilities?" : "Ese ufite indwara zizwi z'indwara nkuru?", w:2, cat:'qCatGeneral' }
-  ]
-});
-
-const CLINICS = [
-  { name:"CHUK (Univ. Hospital Kigali)", type_en:"Reference", type_rw:"Référence", lat:-1.9566, lon:30.0635 },
-  { name:"King Faisal Hospital", type_en:"Private", type_rw:"Kigenga", lat:-1.9441, lon:30.0960 },
-  { name:"Rwanda Military Hospital",  type_en:"Military", type_rw:"Iza Gisirikare", lat:-1.9678, lon:30.1345 },
-  { name:"Kibagabaga Hospital", type_en:"District", type_rw:"Akarere", lat:-1.9333, lon:30.1000 },
-  { name:"Maternité Muhima",   type_en:"Maternity", type_rw:"Indego", lat:-1.9430, lon:30.0570 },
-  { name:"Kacyiru Police Hospital", type_en:"Polyclinic", type_rw:"Polikilinike", lat:-1.9478, lon:30.0943 }
-];
-
-/* ============================================================
-   TCX CONTROLLER
-============================================================ */
-const App = {
-  lang: 'en',
-  menuOpen: false,
-
-  toggleLang() {
-    this.lang = this.lang === 'en' ? 'rw' : 'en';
-    document.getElementById('lang-label').textContent = this.lang === 'en' ? 'RW' : 'EN';
-    this.applyTranslations();
-    Diag.renderSymptoms();
-    if(Diag.state.questions.length > 0) Diag.refreshQuestionText();
-    Diag.renderClinics();
-  },
-
-  applyTranslations() {
-    const d = T[this.lang];
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-      const k = el.getAttribute('data-i18n');
-      if(d[k] !== undefined && typeof d[k] === 'string') el.textContent = d[k];
-    });
-  },
-
-  open() {
-    const ov = document.getElementById('app-overlay');
-    ov.classList.add('open');
-    document.body.style.overflow = 'hidden';
-    Diag.init();
-  },
-
-  close() {
-    const ov = document.getElementById('app-overlay');
-    ov.classList.remove('open');
-    document.body.style.overflow = '';
-    Diag.reset();
-  },
-
-  toggleMobileMenu() {
-    const m = document.getElementById('mobile-menu');
-    this.menuOpen = !this.menuOpen;
-    m.style.display = this.menuOpen ? 'flex' : 'none';
-  },
-
-  t(key) { return T[this.lang][key] || key; }
-};
-
-/* ============================================================
-   DIAGNOSTIC ENGINE
-============================================================ */
-const Diag = {
-  state: {
-    selected: [],
-    questions: [],
-    qIndex: 0,
-    score: 0,
-    maxScore: 0,
-    userLat: null,
-    userLon: null
-  },
-
-  init() {
-    this.renderSymptoms();
-    this.updateProgress(1, 3, "01 - Parameters");
-  },
-
-  updateProgress(cur, total, label) {
-    const pct = Math.round(((cur-1)/total)*100);
-    document.getElementById('app-prog-fill').style.width = pct + '%';
-    document.getElementById('app-prog-label').textContent = label;
-  },
-
-  showPanel(id) {
-    document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
-    document.getElementById('panel-'+id).classList.add('active');
-  },
-
-  renderSymptoms() {
-    const grid = document.getElementById('symp-grid');
-    if(!grid) return;
-    grid.innerHTML = '';
-    SYMPTOMS.forEach(s => {
-      const sel = this.state.selected.includes(s.id);
-      const lk = 'symp'+s.id.charAt(0).toUpperCase()+s.id.slice(1);
-      const label = App.t(lk);
-      const el = document.createElement('div');
-      el.className = 'symp-card' + (sel ? ' selected' : '');
-      el.innerHTML = `
-        <div class="symp-check">${sel?'<svg style="width:12px;height:12px;fill:none;stroke:white;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>':''}</div>
-        <div class="symp-icon"><svg class="icon-lg">${s.icon}</svg></div>
-        <div class="symp-label">${label}</div>`;
-      el.onclick = () => this.toggleSymptom(s.id);
-      grid.appendChild(el);
-    });
-    this.updateSympUI();
-  },
-
-  toggleSymptom(id) {
-    const i = this.state.selected.indexOf(id);
-    if(i>-1) this.state.selected.splice(i,1);
-    else this.state.selected.push(id);
-    this.renderSymptoms();
-  },
-
-  updateSympUI() {
-    const n = this.state.selected.length;
-    const btn = document.getElementById('btn-symp-next');
-    const msg = document.getElementById('symp-count-msg');
-    btn.disabled = n === 0;
-    if(n === 0) {
-      msg.textContent = App.t('sympNone');
-    } else {
-      const fn = T[App.lang].sympSelCount;
-      msg.textContent = typeof fn === 'function' ? fn(n) : `${n} selected`;
-    }
-  },
-
-  compileAndStart() {
-    const QDB = getQuestions(App.lang);
-    let qs = [];
-    this.state.selected.forEach(sid => {
-      if(QDB[sid]) qs = qs.concat(QDB[sid]);
-    });
-    qs = qs.concat(QDB.general);
-
-    this.state.questions = qs;
-    this.state.qIndex = 0;
-    this.state.score = 0;
-    this.state.maxScore = qs.reduce((a,q)=> a + q.w*2, 0);
-
-    this.renderQuestion();
-    this.showPanel(2);
-    this.updateProgress(2, 3, "02 - Query");
-  },
-
-  renderQuestion() {
-    const q = this.state.questions[this.state.qIndex];
-    const total = this.state.questions.length;
-    const idx = this.state.qIndex;
-
-    document.getElementById('q-step-tag').textContent = `Query Segment ${idx+1}/${total}`;
-    document.getElementById('q-text-main').textContent = q.q;
-    document.getElementById('q-meta-label').textContent = App.t(q.cat) || q.cat;
-
-    const pct = Math.round(((idx+1)/total)*100);
-    document.getElementById('app-prog-fill').style.width = (33 + pct*0.33)+'%';
-  },
-
-  refreshQuestionText() {
-    const QDB = getQuestions(App.lang);
-    const newQs = [];
-    this.state.selected.forEach(sid => { if(QDB[sid]) newQs.push(...QDB[sid]); });
-    newQs.push(...QDB.general);
-    this.state.questions = newQs;
-    this.renderQuestion();
-  },
-
-  answer(val) {
-    this.state.score += this.state.questions[this.state.qIndex].w * val;
-    if(this.state.qIndex < this.state.questions.length - 1) {
-      this.state.qIndex++;
-      this.renderQuestion();
-    } else {
-      this.processResults();
-    }
-  },
-
-  prevQuestion() {
-    if(this.state.qIndex > 0) {
-      this.state.qIndex--;
-      this.renderQuestion();
-    } else {
-      this.showPanel(1);
-      this.updateProgress(1,3,"01 - Parameters");
-    }
-  },
-
-  processResults() {
-    const urgent = this.state.score >= (this.state.maxScore * 0.40);
-    const banner = document.getElementById('result-banner');
-    const title = document.getElementById('result-title');
-    const desc = document.getElementById('result-desc');
-    const iconSvg = document.getElementById('result-icon-svg');
-
-    if(urgent) {
-      banner.className = 'result-banner urgent';
-      title.textContent = App.t('resUrgentTitle');
-      desc.textContent = App.t('resUrgentDesc');
-      iconSvg.innerHTML = '<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>';
-    } else {
-      banner.className = 'result-banner monitor';
-      title.textContent = App.t('resMonitorTitle');
-      desc.textContent = App.t('resMonitorDesc');
-      iconSvg.innerHTML = '<polyline points="20 6 9 17 4 12"/>';
-    }
-
-    const recos = App.t(urgent ? 'recoUrgent' : 'recoMonitor');
-    const recoList = document.getElementById('reco-list');
-    recoList.innerHTML = '';
-    recos.forEach((r, i) => {
-      const el = document.createElement('div');
-      el.className = 'result-reco';
-      el.innerHTML = `<div class="reco-num">0${i+1}</div><div class="reco-text"><p><strong>Directive:</strong> ${r}</p></div>`;
-      recoList.appendChild(el);
-    });
-
-    this.renderClinics();
-    this.showPanel(3);
-    this.updateProgress(3,3,"03 - Complete");
-    document.getElementById('app-prog-fill').style.width = '100%';
-  },
-
-  haversine(lat1,lon1,lat2,lon2) {
-    const R=6371, p=Math.PI/180;
-    const a = 0.5-Math.cos((lat2-lat1)*p)/2+Math.cos(lat1*p)*Math.cos(lat2*p)*(1-Math.cos((lon2-lon1)*p))/2;
-    return R*2*Math.asin(Math.sqrt(a));
-  },
-
-  locate() {
-    const msg = document.getElementById('gps-status-msg');
-    if(!navigator.geolocation) { msg.textContent='GPS offline'; return; }
-    msg.textContent = 'Establishing connection...';
-    navigator.geolocation.getCurrentPosition(
-      pos => {
-        this.state.userLat = pos.coords.latitude;
-        this.state.userLon = pos.coords.longitude;
-        msg.textContent = App.t('gpsActive');
-        msg.style.color = 'var(--primary)';
-        msg.style.fontWeight = '700';
-        this.renderClinics();
-      },
-      () => { msg.textContent = 'GPS failed.'; msg.style.color='var(--accent)'; }
-    );
-  },
-
-  renderClinics() {
-    const list = document.getElementById('clinic-list-results');
-    if(!list) return;
-    let clinics = CLINICS.map(c => ({
-      ...c,
-      dist: (this.state.userLat !== null) ? this.haversine(this.state.userLat, this.state.userLon, c.lat, c.lon) : null
-    }));
-    if(this.state.userLat !== null) clinics.sort((a,b)=>a.dist-b.dist);
-
-    list.innerHTML = '';
-    clinics.forEach((c) => {
-      const distStr = c.dist !== null ? c.dist.toFixed(1)+' km' : App.t('distUnknown');
-      const typeKey = App.lang === 'en' ? c.type_en : c.type_rw;
+    <div class="priority-section">
+      <div class="section-label">Critical Dispatch</div>
       
-      const el = document.createElement('div');
-      el.className = 'clinic-row';
-      el.innerHTML = `
-        <div class="clinic-info">
-          <div class="clinic-avatar">🏥</div>
-          <div class="clinic-details">
-            <span class="clinic-name">${c.name}</span>
-            <div class="clinic-meta">
-              <span class="badge-dist ${c.dist===null?'unknown':''}">${distStr}</span>
-              <span>• TCX Node: ${typeKey}</span>
+      <div class="priority-card" onclick="window.location.href='tel:112'">
+        <div class="p-icon">🚓</div>
+        <div class="p-title">National Police</div>
+        <div class="p-num">112</div>
+        <a href="tel:112" class="p-action" onclick="event.stopPropagation()">Dispatch Call</a>
+      </div>
+
+      <div class="priority-card" onclick="window.location.href='tel:912'">
+        <div class="p-icon">🚑</div>
+        <div class="p-title">SAMU Ambulance</div>
+        <div class="p-num">912</div>
+        <a href="tel:912" class="p-action" onclick="event.stopPropagation()">Dispatch Call</a>
+      </div>
+
+      <div class="priority-card" onclick="window.location.href='tel:110'">
+        <div class="p-icon">🔥</div>
+        <div class="p-title">Fire Brigade</div>
+        <div class="p-num">110</div>
+        <a href="tel:110" class="p-action" onclick="event.stopPropagation()">Dispatch Call</a>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      Powered by NextWave Goma<br>System Active & Online
+    </div>
+  </aside>
+
+  <main class="main-area">
+    
+    <header class="top-header">
+      <div class="page-title">Community Dashboard</div>
+      
+      <div class="search-container">
+        <svg class="search-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        <input type="text" id="global-search" placeholder="Search facilities, departments, codes..." autocomplete="off">
+        <span class="search-shortcut">Cmd+K</span>
+      </div>
+
+      <div class="user-profile">
+        <div class="user-info" style="text-align: right;">
+          <span class="user-name">Isaac Nshuti</span>
+          <span class="user-role">System Admin</span>
+        </div>
+        <div class="avatar">IN</div>
+      </div>
+    </header>
+
+    <div class="dashboard-content">
+      
+      <div class="section-header">
+        <div>
+          <h2>All Departments & Services</h2>
+          <p>Real-time directory for local authorities, healthcare facilities, and utilities.</p>
+        </div>
+      </div>
+
+      <div id="no-results">
+        <span>📭</span>
+        <h3>No services found</h3>
+        <p>Try adjusting your search terms or checking for typos.</p>
+      </div>
+
+      <div class="categories-grid" id="directory-grid">
+        
+        <div class="category-card cat-emergency">
+          <div class="card-header">
+            <div class="card-title-wrap">
+              <div class="cat-icon">🚨</div>
+              <div class="card-title">Law & Emergency</div>
             </div>
+            <span class="item-count">3 items</span>
+          </div>
+          <div class="card-body">
+            
+            <div class="entry">
+              <div class="entry-info">
+                <div class="entry-avatar">🚓</div>
+                <div class="entry-details">
+                  <span class="entry-name">Rwanda National Police</span>
+                  <div class="entry-meta">
+                    <span class="badge badge-247">24/7 Response</span>
+                    <span>• Kigali Command Center</span>
+                  </div>
+                </div>
+              </div>
+              <div class="entry-action">
+                <span class="entry-number">112</span>
+                <a href="tel:112" class="btn-call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>Call</a>
+              </div>
+            </div>
+
+            <div class="entry">
+              <div class="entry-info">
+                <div class="entry-avatar">🚦</div>
+                <div class="entry-details">
+                  <span class="entry-name">Traffic Police Department</span>
+                  <div class="entry-meta">
+                    <span class="badge badge-247">24/7 Response</span>
+                    <span>• Road accidents & blocks</span>
+                  </div>
+                </div>
+              </div>
+              <div class="entry-action">
+                <span class="entry-number">118</span>
+                <a href="tel:118" class="btn-call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>Call</a>
+              </div>
+            </div>
+
+            <div class="entry">
+              <div class="entry-info">
+                <div class="entry-avatar">🛡️</div>
+                <div class="entry-details">
+                  <span class="entry-name">RIB Investigation Line</span>
+                  <div class="entry-meta">
+                    <span class="badge badge-247">24/7 Response</span>
+                    <span>• Anonymous Tip Line</span>
+                  </div>
+                </div>
+              </div>
+              <div class="entry-action">
+                <span class="entry-number">166</span>
+                <a href="tel:166" class="btn-call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>Call</a>
+              </div>
+            </div>
+
           </div>
         </div>
-        <div class="clinic-action">
-          <a href="#" class="btn-call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>Connect</a>
-        </div>`;
-      list.appendChild(el);
-    });
-  },
 
-  reset() {
-    this.state.selected = [];
-    this.state.questions = [];
-    this.state.qIndex = 0;
-    this.state.score = 0;
-    this.state.maxScore = 0;
-    this.state.userLat = null;
-    this.state.userLon = null;
-    const gps = document.getElementById('gps-status-msg');
-    if(gps) { gps.textContent = App.t('gpsDefault'); gps.style.color=''; gps.style.fontWeight='';}
-    this.showPanel(1);
-    this.renderSymptoms();
-    this.updateProgress(1,3,"01 - Parameters");
+        <div class="category-card cat-health">
+          <div class="card-header">
+            <div class="card-title-wrap">
+              <div class="cat-icon">🏥</div>
+              <div class="card-title">Healthcare Facilities</div>
+            </div>
+            <span class="item-count">4 items</span>
+          </div>
+          <div class="card-body">
+            
+            <div class="entry">
+              <div class="entry-info">
+                <div class="entry-avatar">🦠</div>
+                <div class="entry-details">
+                  <span class="entry-name">RBC Epidemic Response</span>
+                  <div class="entry-meta">
+                    <span class="badge badge-247">24/7 Active</span>
+                    <span>• Toll Free Support</span>
+                  </div>
+                </div>
+              </div>
+              <div class="entry-action">
+                <span class="entry-number">114</span>
+                <a href="tel:114" class="btn-call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>Call</a>
+              </div>
+            </div>
+
+            <div class="entry">
+              <div class="entry-info">
+                <div class="entry-avatar">🏥</div>
+                <div class="entry-details">
+                  <span class="entry-name">CHUK Regional Hospital</span>
+                  <div class="entry-meta">
+                    <span class="badge badge-247">24/7 Open</span>
+                    <span>• Central Kigali Area</span>
+                  </div>
+                </div>
+              </div>
+              <div class="entry-action">
+                <span class="entry-number">0788 303 009</span>
+                <a href="tel:0788303009" class="btn-call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>Call</a>
+              </div>
+            </div>
+
+            <div class="entry">
+              <div class="entry-info">
+                <div class="entry-avatar">🏥</div>
+                <div class="entry-details">
+                  <span class="entry-name">King Faisal Hospital</span>
+                  <div class="entry-meta">
+                    <span class="badge badge-247">24/7 Open</span>
+                    <span>• Kacyiru District</span>
+                  </div>
+                </div>
+              </div>
+              <div class="entry-action">
+                <span class="entry-number">3939</span>
+                <a href="tel:3939" class="btn-call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>Call</a>
+              </div>
+            </div>
+
+            <div class="entry">
+              <div class="entry-info">
+                <div class="entry-avatar">🛑</div>
+                <div class="entry-details">
+                  <span class="entry-name">Isange One Stop Center</span>
+                  <div class="entry-meta">
+                    <span class="badge badge-247">24/7 Support</span>
+                    <span>• GBV & Abuse Handling</span>
+                  </div>
+                </div>
+              </div>
+              <div class="entry-action">
+                <span class="entry-number">3029</span>
+                <a href="tel:3029" class="btn-call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>Call</a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="category-card cat-water">
+          <div class="card-header">
+            <div class="card-title-wrap">
+              <div class="cat-icon">⚡</div>
+              <div class="card-title">Public Utilities</div>
+            </div>
+            <span class="item-count">2 items</span>
+          </div>
+          <div class="card-body">
+            
+            <div class="entry">
+              <div class="entry-info">
+                <div class="entry-avatar">💧</div>
+                <div class="entry-details">
+                  <span class="entry-name">WASAC Water Support</span>
+                  <div class="entry-meta">
+                    <span class="badge badge-day">Standard Hrs</span>
+                    <span>• Outages & Leakages</span>
+                  </div>
+                </div>
+              </div>
+              <div class="entry-action">
+                <span class="entry-number">3131</span>
+                <a href="tel:3131" class="btn-call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>Call</a>
+              </div>
+            </div>
+
+            <div class="entry">
+              <div class="entry-info">
+                <div class="entry-avatar">⚡</div>
+                <div class="entry-details">
+                  <span class="entry-name">REG Electricity Grid</span>
+                  <div class="entry-meta">
+                    <span class="badge badge-247">24/7 Support</span>
+                    <span>• Power Outages</span>
+                  </div>
+                </div>
+              </div>
+              <div class="entry-action">
+                <span class="entry-number">3535</span>
+                <a href="tel:3535" class="btn-call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>Call</a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div></div></main>
+</div>
+
+<script>
+// 1. Splash Screen & Initialization Logic
+window.addEventListener("load", () => {
+  const splash = document.getElementById("splash-screen");
+  const progressFill = document.getElementById("progress-fill");
+  const appContainer = document.getElementById("app-container");
+
+  // Animate progress bar to 100%
+  setTimeout(() => {
+    progressFill.style.width = "100%";
+  }, 100);
+
+  // Remove splash and reveal UI after loading animation
+  setTimeout(() => {
+    splash.classList.add("hidden");
+    appContainer.classList.add("loaded");
+    
+    // Clean up DOM after fade out
+    setTimeout(() => { splash.remove(); }, 800);
+  }, 1800); // 1.8 seconds loading experience
+});
+
+// 2. Global Keyboard Shortcut for Search (Cmd+K or Ctrl+K)
+document.addEventListener('keydown', (e) => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+    e.preventDefault();
+    document.getElementById('global-search').focus();
   }
-};
+});
 
-/* ============================================================
-   INIT & SCROLL ANIMATIONS
-============================================================ */
-document.addEventListener('DOMContentLoaded', () => {
-  App.applyTranslations();
-  Diag.init();
+// 3. Desktop Optimized Search Logic
+const searchInput = document.getElementById("global-search");
+const grid = document.getElementById("directory-grid");
+const noResults = document.getElementById("no-results");
 
-  // Sticky header
-  window.addEventListener('scroll', () => {
-    document.getElementById('main-header').classList.toggle('scrolled', window.scrollY > 20);
+searchInput.addEventListener("input", function(e) {
+  const query = e.target.value.toLowerCase().trim();
+  const cards = document.querySelectorAll(".category-card");
+  let globalFound = 0;
+
+  cards.forEach(card => {
+    const entries = card.querySelectorAll(".entry");
+    let cardFoundCount = 0;
+
+    entries.forEach(entry => {
+      // Find elements to highlight or search within
+      const nameEl = entry.querySelector('.entry-name');
+      const detailsEl = entry.querySelector('.entry-details');
+      const text = detailsEl.textContent.toLowerCase();
+      
+      // Basic text reset
+      nameEl.innerHTML = nameEl.textContent;
+
+      if (text.includes(query)) {
+        entry.style.display = "flex";
+        cardFoundCount++;
+        globalFound++;
+        
+        // Add highlight markup if query isn't empty
+        if (query.length > 1) {
+          const regex = new RegExp(`(${query})`, "gi");
+          nameEl.innerHTML = nameEl.textContent.replace(regex, "<mark>$1</mark>");
+        }
+      } else {
+        entry.style.display = "none";
+      }
+    });
+
+    // Hide entire card if no entries match inside it
+    if (query !== "" && cardFoundCount === 0) {
+      card.style.display = "none";
+    } else {
+      card.style.display = "block";
+      // Update item count dynamically
+      const countLabel = card.querySelector(".item-count");
+      countLabel.textContent = query === "" 
+        ? `${entries.length} items` 
+        : `${cardFoundCount} found`;
+    }
   });
 
-  // Intersection observer for fade animations
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if(e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
-    });
-  }, {threshold:0.1});
-  document.querySelectorAll('.fade-up,.fade-in').forEach(el=>obs.observe(el));
+  // Toggle No Results view and Grid view
+  if (query && globalFound === 0) {
+    grid.style.display = "none";
+    noResults.style.display = "block";
+  } else {
+    grid.style.display = "grid";
+    noResults.style.display = "none";
+  }
 });
 </script>
+
 </body>
 </html>
