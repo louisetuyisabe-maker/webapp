@@ -1,532 +1,539 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Emergency contacts for Kigali and Rwanda - Enterprise Dashboard">
+<meta name="description" content="Kigali Emergency Directory - Quick Dispatch System">
 <title>Kigali Emergency Directory</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
-/* ── BASE & RESET ────────────────────────────── */
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
+/* ── DESIGN SYSTEM (Green Palette) ────────────────────────────── */
 :root {
-  /* Enterprise TCX Palette */
-  --primary: #0A3D6B;
-  --primary-dark: #072E52;
-  --primary-light: #F0F6FC;
-  --accent: #E8320A;
-  --accent-hover: #C0200A;
-  --accent-soft: #FEF0ED;
-  --green: #0C6B3F;
-  --green-hover: #09502F;
-  --green-soft: #E8F5EE;
-  --amber: #D97706;
-  --amber-soft: #FEF3E2;
+  --primary: #0A5C3C;
+  --primary-dark: #07462D;
+  --primary-light: #E8F5F0;
+  
+  --accent: #F4A836;
+  --accent-dark: #D48A1A;
+  --accent-soft: #FEF3E2;
+  
+  --danger: #E8320A;
+  --danger-soft: #FEF0ED;
+  
   --slate: #1E3148;
   --slate-soft: #EDF1F7;
 
-  --bg: #F4F7FB;
+  --bg: #F7F8FA;
   --surface: #FFFFFF;
-  --border: #E1E8F0;
-  --border-light: #F0F4F8;
+  --border: #E2E8F0;
+  --border-light: #F0F2F5;
   
-  --text-main: #0F172A;
-  --text-secondary: #475569;
-  --text-muted: #94A3B8;
+  --text-main: #0D1B2A;
+  --text-secondary: #4A5568;
+  --text-muted: #8A9BB0;
 
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 20px;
   --radius-xl: 24px;
   
-  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(15, 23, 42, 0.02);
-  --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.05), 0 2px 4px -2px rgba(15, 23, 42, 0.02);
-  --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.05), 0 4px 6px -4px rgba(15, 23, 42, 0.02);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 8px 24px rgba(10, 92, 60, 0.08);
+  --shadow-lg: 0 20px 40px -8px rgba(10, 92, 60, 0.12);
   
   --font-sans: 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
   
-  --sidebar-width: 300px;
+  --sidebar-width: 280px;
 }
 
-body {
-  font-family: var(--font-sans);
-  background: var(--bg);
-  color: var(--text-main);
-  font-size: 14px;
-  line-height: 1.5;
-  height: 100vh;
-  overflow: hidden; /* Prevent body scroll, layout handles it */
-  display: flex;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font-sans); }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; display: block; }
 
-/* Custom Scrollbar for Desktop */
+/* Custom Scrollbar */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+::-webkit-scrollbar-thumb { background: #CBD5E0; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #A0AEC0; }
 
-/* ── SPLASH SCREEN (PERFECT UI) ──────────────── */
-#splash-screen {
-  position: fixed;
-  inset: 0;
-  background: var(--primary-dark);
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s;
-}
-#splash-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+/* ── ANIMATIONS ── */
+.reveal-up { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+.reveal-in { opacity: 0; transform: scale(0.95); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+.is-visible { opacity: 1; transform: translate(0) scale(1); }
 
-.splash-content { text-align: center; animation: slideUpFade 1s ease-out forwards; }
-.splash-logo-box {
-  width: 80px; height: 80px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255,255,255,0.2);
-  border-radius: var(--radius-xl);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 40px; margin: 0 auto 24px;
-  box-shadow: 0 0 40px rgba(232, 50, 10, 0.2);
-  position: relative;
-}
-.splash-logo-box::after {
-  content: ''; position: absolute; inset: -4px;
-  border-radius: inherit; border: 2px solid transparent;
-  border-top-color: var(--accent);
-  animation: spin 1.5s linear infinite;
-}
-.splash-title { color: #fff; font-size: 28px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
-.splash-subtitle { color: rgba(255, 255, 255, 0.6); font-size: 15px; font-weight: 400; letter-spacing: 0.05em; text-transform: uppercase; }
+/* ── BUTTONS ── */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 28px; border: none; border-radius: var(--radius-sm); font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); text-align: center; }
+.btn-primary { background: var(--primary); color: #fff; box-shadow: 0 4px 12px rgba(10, 92, 60, 0.2); }
+.btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 6px 16px rgba(10, 92, 60, 0.3); }
+.btn-accent { background: var(--accent); color: #fff; box-shadow: 0 4px 12px rgba(244, 168, 54, 0.2); }
+.btn-accent:hover { background: var(--accent-dark); transform: translateY(-2px); box-shadow: 0 6px 16px rgba(244, 168, 54, 0.3); }
+.btn-outline { background: var(--surface); border: 1.5px solid var(--border); color: var(--text-main); }
+.btn-outline:hover { background: var(--primary-light); border-color: var(--primary); color: var(--primary); transform: translateY(-2px); }
+.btn-ghost { background: transparent; color: var(--text-secondary); padding: 8px 16px; }
+.btn-ghost:hover { background: var(--border-light); color: var(--text-main); }
+.btn-lg { padding: 16px 32px; font-size: 15px; border-radius: var(--radius-md); }
+.btn-sm { padding: 8px 16px; font-size: 13px; }
 
-.loading-bar-container {
-  width: 240px; height: 4px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 4px; margin: 40px auto 0;
-  overflow: hidden;
-}
-.loading-bar-fill {
-  height: 100%; width: 0%;
-  background: var(--accent);
-  border-radius: 4px;
-  transition: width 1.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
+/* Icons */
+.icon { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+.icon-lg { width: 28px; height: 28px; }
 
-@keyframes spin { 100% { transform: rotate(360deg); } }
-@keyframes slideUpFade { 
-  0% { opacity: 0; transform: translateY(20px); } 
-  100% { opacity: 1; transform: translateY(0); } 
-}
+/* ── VIEW ROUTING ── */
+.view-section { display: none; width: 100%; min-height: 100vh; animation: fadeIn 0.4s ease; }
+.view-section.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-/* ── LAYOUT ARCHITECTURE ─────────────────────── */
-#app-container {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  transform: scale(0.98);
-  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-#app-container.loaded { opacity: 1; transform: scale(1); }
+/* ==========================================================================
+   VIEW 1: LANDING PAGE (PRESENTATION)
+========================================================================== */
+.container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
 
-/* ── SIDEBAR ─────────────────────────────────── */
-.sidebar {
-  width: var(--sidebar-width);
-  background: var(--primary);
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-  border-right: 1px solid rgba(255,255,255,0.1);
-  z-index: 10;
-}
-.sidebar-header {
-  padding: 32px 24px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-.brand-icon {
-  width: 48px; height: 48px;
-  background: linear-gradient(135deg, var(--accent) 0%, #C0200A 100%);
-  border-radius: var(--radius-md);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 24px;
-  box-shadow: 0 4px 12px rgba(232, 50, 10, 0.3);
-}
-.brand-text h1 { font-size: 18px; font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; }
-.brand-text p { font-size: 12px; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-top: 4px; letter-spacing: 0.05em;}
+/* Header */
+.landing-header { position: fixed; top: 0; width: 100%; z-index: 100; background: rgba(255,255,255,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid transparent; transition: all 0.3s; height: 80px; display: flex; align-items: center; }
+.landing-header.scrolled { border-bottom-color: var(--border); box-shadow: var(--shadow-sm); }
+.nav-container { width: 100%; max-width: 1140px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; }
+.logo { display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 700; color: var(--primary); letter-spacing: -0.5px; }
+.logo-icon { width: 36px; height: 36px; background: var(--primary); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 18px; }
+.nav-links { display: flex; gap: 32px; }
+.nav-links a { font-size: 14px; font-weight: 600; color: var(--text-secondary); transition: color 0.2s; }
+.nav-links a:hover { color: var(--primary); }
+.nav-actions { display: flex; gap: 16px; align-items: center; }
 
-.priority-section { padding: 0 24px 24px; flex-grow: 1; overflow-y: auto; }
-.section-label {
-  font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.5);
-  text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 16px;
-  display: flex; align-items: center; gap: 8px;
-}
-.section-label::before { content:''; width: 6px; height: 6px; background: #FFD166; border-radius: 50%; box-shadow: 0 0 8px rgba(255,209,102,0.6); }
+/* Hero */
+.hero { padding: 160px 0 100px; background: radial-gradient(circle at top right, var(--primary-light), var(--bg)); position: relative; overflow: hidden; border-bottom: 1px solid var(--border); }
+.hero-content { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+.hero-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid rgba(10,92,60,0.2); padding: 8px 16px; border-radius: 100px; font-size: 12px; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 24px; box-shadow: var(--shadow-sm); }
+.hero-badge::before { content: ''; width: 8px; height: 8px; background: var(--danger); border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.5;transform:scale(0.8);} }
+.hero h1 { font-size: clamp(36px, 5vw, 56px); font-weight: 800; line-height: 1.1; letter-spacing: -1.5px; margin-bottom: 24px; color: var(--text-main); }
+.hero h1 span { color: var(--primary); }
+.hero p { font-size: 18px; color: var(--text-secondary); margin-bottom: 40px; line-height: 1.7; max-width: 90%; }
+.hero-visual { position: relative; }
+.mockup-window { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 12px; box-shadow: var(--shadow-lg); }
+.mockup-header { display: flex; gap: 6px; margin-bottom: 16px; padding: 4px 8px; }
+.mockup-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--border); }
+.mockup-dot:nth-child(1) { background: #FF5F56; }
+.mockup-dot:nth-child(2) { background: #FFBD2E; }
+.mockup-dot:nth-child(3) { background: #27C93F; }
 
-.priority-card {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-lg);
-  padding: 20px; margin-bottom: 16px;
-  transition: all 0.2s ease;
-  cursor: pointer;
-  display: flex; flex-direction: column; align-items: center; text-align: center;
-}
-.priority-card:hover {
-  background: rgba(255, 255, 255, 0.1);
-  transform: translateY(-2px);
-  border-color: rgba(255, 255, 255, 0.2);
-}
-.p-icon { font-size: 32px; margin-bottom: 12px; }
-.p-title { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.8); text-transform: uppercase; letter-spacing: 0.05em; }
-.p-num { font-family: var(--font-mono); font-size: 32px; font-weight: 600; margin-top: 4px; color: #fff; }
-.p-action {
-  margin-top: 16px; padding: 8px 24px;
-  background: rgba(255,255,255,0.1); border-radius: 100px;
-  color: #fff; text-decoration: none; font-size: 12px; font-weight: 600;
-  transition: background 0.2s; width: 100%;
-}
-.priority-card:hover .p-action { background: var(--accent); }
+/* Sections */
+.section { padding: 100px 0; }
+.section-alt { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.section-header { text-align: center; max-width: 600px; margin: 0 auto 64px; }
+.section-label { font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; display: block; }
+.section-title { font-size: 36px; font-weight: 800; letter-spacing: -1px; margin-bottom: 16px; }
+.section-desc { font-size: 16px; color: var(--text-secondary); }
 
-.sidebar-footer { padding: 24px; border-top: 1px solid rgba(255,255,255,0.05); font-size: 11px; color: rgba(255,255,255,0.4); text-align: center; }
+/* Timeline / How it works */
+.timeline { position: relative; max-width: 800px; margin: 0 auto; }
+.timeline::before { content: ''; position: absolute; left: 24px; top: 0; bottom: 0; width: 2px; background: var(--border); }
+.timeline-step { display: flex; gap: 40px; margin-bottom: 48px; position: relative; }
+.timeline-step:last-child { margin-bottom: 0; }
+.timeline-number { width: 50px; height: 50px; background: var(--primary); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; flex-shrink: 0; position: relative; z-index: 2; box-shadow: 0 0 0 8px var(--bg); }
+.section-alt .timeline-number { box-shadow: 0 0 0 8px var(--surface); }
+.timeline-content { background: var(--surface); border: 1px solid var(--border); padding: 32px; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); flex-grow: 1; transition: transform 0.3s, box-shadow 0.3s; }
+.timeline-content:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--primary-light); }
+.timeline-content h3 { font-size: 20px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+.timeline-content p { color: var(--text-secondary); font-size: 15px; }
 
-/* ── MAIN CONTENT AREA ───────────────────────── */
+/* Features Grid */
+.features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+.feature-card { background: var(--bg); border: 1px solid var(--border); padding: 40px 32px; border-radius: var(--radius-lg); text-align: left; transition: all 0.3s; }
+.feature-card:hover { background: var(--surface); border-color: var(--primary); box-shadow: var(--shadow-md); }
+.feature-icon { width: 56px; height: 56px; background: var(--primary-light); color: var(--primary); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; font-size: 24px; }
+.feature-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 12px; }
+.feature-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+
+/* Footer */
+footer { background: #0D1B2A; color: rgba(255,255,255,0.7); padding: 80px 0 40px; }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 60px; margin-bottom: 60px; }
+.footer-logo { display: flex; align-items: center; gap: 12px; font-size: 24px; font-weight: 700; margin-bottom: 20px; color: #fff; }
+.footer-logo .logo-icon { background: var(--primary); color: #fff; }
+.footer-text { font-size: 15px; max-width: 300px; }
+.footer-links h4 { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 24px; color: #fff; }
+.footer-links ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.footer-links a { color: rgba(255,255,255,0.6); font-size: 15px; transition: color 0.2s; }
+.footer-links a:hover { color: #fff; }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 32px; display: flex; justify-content: space-between; font-size: 14px; }
+
+/* ==========================================================================
+   VIEW 2: DIRECTORY DASHBOARD
+========================================================================== */
+#view-directory { background: var(--bg); display: none; }
+#view-directory.active { display: flex; }
+
+.dashboard-layout { display: flex; width: 100%; height: 100vh; overflow: hidden; }
+
+/* Sidebar */
+.sidebar { width: var(--sidebar-width); background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; flex-shrink: 0; z-index: 10; }
+.sidebar-header { padding: 32px 24px; display: flex; align-items: center; gap: 16px; cursor: pointer; transition: opacity 0.2s; border-bottom: 1px solid var(--border-light); }
+.sidebar-header:hover { opacity: 0.8; }
+.sidebar-header .brand-icon { width: 40px; height: 40px; background: var(--primary-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--primary); }
+.sidebar-header h1 { font-size: 18px; font-weight: 700; line-height: 1.2; color: var(--text-main); }
+.sidebar-header p { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px;}
+
+.priority-section { padding: 24px; flex-grow: 1; overflow-y: auto; background: var(--primary); color: #fff; }
+.priority-section .section-label { color: rgba(255,255,255,0.7); border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 12px; margin-bottom: 20px; }
+.p-card-dash { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: var(--radius-md); padding: 16px; margin-bottom: 12px; text-align: center; transition: all 0.2s; cursor: pointer; }
+.p-card-dash:hover { background: rgba(255, 255, 255, 0.2); transform: translateY(-2px); }
+.p-card-dash .p-icon { font-size: 24px; margin-bottom: 8px; display: block; }
+.p-card-dash .p-title { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.8); text-transform: uppercase; letter-spacing: 0.5px; }
+.p-card-dash .p-num { font-family: var(--font-mono); font-size: 26px; font-weight: 700; margin: 4px 0 12px; color: #fff; }
+.p-card-dash .p-action { padding: 8px 16px; background: #fff; border-radius: 100px; color: var(--primary); font-size: 12px; font-weight: 700; display: block; transition: all 0.2s; }
+.p-card-dash:hover .p-action { background: var(--accent); color: #fff; }
+
+/* Main Area */
 .main-area { flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; background: var(--bg); }
-
-/* TOP HEADER */
-.top-header {
-  height: 80px; background: var(--surface); border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 40px; flex-shrink: 0;
-}
-.page-title { font-size: 20px; font-weight: 600; color: var(--text-main); }
-
-.search-container { position: relative; width: 400px; }
-.search-icon {
-  position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
-  color: var(--text-muted); pointer-events: none;
-}
-#global-search {
-  width: 100%; padding: 12px 16px 12px 44px;
-  font-family: var(--font-sans); font-size: 14px;
-  background: var(--bg); border: 1px solid var(--border);
-  border-radius: var(--radius-xl); color: var(--text-main);
-  transition: all 0.2s ease; outline: none;
-}
-#global-search::placeholder { color: var(--text-muted); }
+.top-header { height: 80px; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; flex-shrink: 0; }
+.search-container { position: relative; width: 100%; max-width: 500px; }
+.search-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; }
+#global-search { width: 100%; padding: 14px 16px 14px 48px; font-family: var(--font-sans); font-size: 15px; font-weight: 500; background: var(--bg); border: 1.5px solid var(--border); border-radius: 100px; color: var(--text-main); transition: all 0.2s; outline: none; }
 #global-search:focus { background: var(--surface); border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-light); }
-.search-shortcut {
-  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
-  font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);
-  background: var(--surface); border: 1px solid var(--border); padding: 2px 6px; border-radius: 4px;
-}
 
-.user-profile { display: flex; align-items: center; gap: 12px; }
-.avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; border: 1px solid var(--border); }
-.user-info { display: flex; flex-direction: column; }
-.user-name { font-size: 14px; font-weight: 600; color: var(--text-main); }
-.user-role { font-size: 12px; color: var(--text-secondary); }
-
-/* DASHBOARD CONTENT */
+/* Dashboard Content */
 .dashboard-content { padding: 40px; overflow-y: auto; flex-grow: 1; }
+.dash-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 32px; }
+.dash-header h2 { font-size: 28px; font-weight: 800; letter-spacing: -1px; }
+.dash-header p { font-size: 15px; color: var(--text-secondary); margin-top: 4px; }
 
-.section-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 24px; }
-.section-header h2 { font-size: 18px; font-weight: 600; color: var(--text-main); }
-.section-header p { font-size: 14px; color: var(--text-secondary); margin-top: 4px; }
+#no-results { display: none; text-align: center; padding: 60px 20px; background: var(--surface); border: 1px dashed var(--border); border-radius: var(--radius-lg); }
+#no-results span { font-size: 40px; display: block; margin-bottom: 16px; opacity: 0.5; }
+#no-results h3 { font-size: 18px; font-weight: 700; color: var(--text-main); }
 
-#no-results {
-  display: none; text-align: center; padding: 80px 20px;
-  background: var(--surface); border: 1px dashed var(--border); border-radius: var(--radius-lg);
-}
-#no-results span { font-size: 48px; display: block; margin-bottom: 16px; opacity: 0.5; }
-#no-results h3 { font-size: 18px; color: var(--text-main); margin-bottom: 8px; }
-#no-results p { color: var(--text-secondary); }
-
-/* GRID LAYOUT (PC FORMAT) */
-.categories-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
-  gap: 24px;
-  align-items: start;
-}
-
-/* CARDS */
-.category-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-  overflow: hidden;
-  transition: box-shadow 0.2s, transform 0.2s;
-}
-.category-card:hover { box-shadow: var(--shadow-md); }
-
-.card-header {
-  padding: 20px 24px; border-bottom: 1px solid var(--border-light);
-  display: flex; align-items: center; justify-content: space-between;
-}
+/* Grid & Cards */
+.categories-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); gap: 24px; align-items: start; }
+.category-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); overflow: hidden; transition: box-shadow 0.2s, border-color 0.2s; }
+.category-card:hover { box-shadow: var(--shadow-md); border-color: var(--primary-light); }
+.card-header { padding: 20px 24px; border-bottom: 1px solid var(--border-light); display: flex; align-items: center; justify-content: space-between; }
 .card-title-wrap { display: flex; align-items: center; gap: 12px; }
-.cat-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
-.card-title { font-size: 16px; font-weight: 600; color: var(--text-main); }
-.item-count { font-size: 12px; font-weight: 500; color: var(--text-muted); background: var(--bg); padding: 4px 10px; border-radius: 20px; border: 1px solid var(--border); }
+.cat-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+.card-title { font-size: 16px; font-weight: 700; }
+.item-count { font-size: 12px; font-weight: 600; color: var(--text-secondary); background: var(--bg); padding: 4px 10px; border-radius: 20px; border: 1px solid var(--border); }
 
-/* Theming category headers */
-.cat-emergency .cat-icon { background: var(--accent-soft); color: var(--accent); }
-.cat-health .cat-icon { background: var(--green-soft); color: var(--green); }
-.cat-water .cat-icon { background: var(--amber-soft); color: var(--amber); }
-.cat-community .cat-icon { background: var(--primary-light); color: var(--primary); }
+/* Card Themes */
+.cat-emergency .cat-icon { background: var(--danger-soft); color: var(--danger); }
+.cat-health .cat-icon { background: var(--primary-light); color: var(--primary); }
+.cat-water .cat-icon { background: var(--accent-soft); color: var(--accent-dark); }
+.cat-community .cat-icon { background: var(--slate-soft); color: var(--slate); }
 
-.card-body { padding: 12px; }
-
-/* ENTRIES (TABLE/LIST STYLE) */
-.entry {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 16px; border-radius: var(--radius-md);
-  transition: background 0.15s ease;
-}
+/* Entries */
+.entry { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; border-bottom: 1px solid var(--border-light); transition: background 0.15s; }
+.entry:last-child { border-bottom: none; }
 .entry:hover { background: var(--bg); }
-
 .entry-info { display: flex; align-items: center; gap: 16px; flex: 1; min-width: 0; }
-.entry-avatar { width: 40px; height: 40px; border-radius: 10px; background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; box-shadow: var(--shadow-sm); }
-
-.entry-details { display: flex; flex-direction: column; gap: 4px; overflow: hidden; }
-.entry-name { font-weight: 600; font-size: 14px; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.entry-avatar { width: 44px; height: 44px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; box-shadow: var(--shadow-sm); }
+.entry-details { overflow: hidden; }
+.entry-name { font-weight: 700; font-size: 15px; color: var(--text-main); margin-bottom: 4px; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .entry-meta { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-secondary); }
-.badge { padding: 2px 8px; border-radius: 6px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
-.badge-247 { background: var(--green-soft); color: var(--green-hover); }
-.badge-day { background: var(--amber-soft); color: var(--amber); }
+.badge-status { padding: 2px 8px; border-radius: 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; background: var(--border-light); color: var(--text-secondary); }
+.badge-status.active { background: var(--primary-light); color: var(--primary); }
 
 .entry-action { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
-.entry-number { font-family: var(--font-mono); font-size: 14px; font-weight: 500; color: var(--text-secondary); }
-.btn-call {
-  display: flex; align-items: center; gap: 6px;
-  padding: 8px 16px; border-radius: var(--radius-sm);
-  font-size: 13px; font-weight: 600; text-decoration: none;
-  background: var(--surface); border: 1px solid var(--border); color: var(--text-main);
-  transition: all 0.2s; box-shadow: var(--shadow-sm); cursor: pointer;
-}
-.btn-call:hover { background: var(--primary-light); border-color: var(--primary); color: var(--primary); }
-.btn-call svg { width: 14px; height: 14px; }
+.entry-number { font-family: var(--font-mono); font-size: 14px; font-weight: 600; color: var(--text-secondary); }
+.btn-call-sm { background: var(--surface); border: 1px solid var(--border); color: var(--text-main); font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 8px; display: flex; align-items: center; gap: 6px; transition: all 0.2s; box-shadow: var(--shadow-sm); text-decoration: none; }
+.btn-call-sm:hover { background: var(--primary); border-color: var(--primary); color: #fff; transform: translateY(-1px); }
 
-/* Highlight for search terms */
-mark { background: #FEF08A; color: #854D0E; padding: 0 2px; border-radius: 2px; }
+/* Highlight Search */
+mark { background: #FEF3C7; color: #92400E; padding: 0 4px; border-radius: 4px; font-weight: 600; }
 
-/* Responsiveness */
-@media (max-width: 1200px) {
-  .categories-grid { grid-template-columns: 1fr; }
-}
-@media (max-width: 900px) {
-  .sidebar { width: 260px; }
+/* Responsive */
+@media(max-width: 900px) {
+  .hero-content, .footer-grid { grid-template-columns: 1fr; text-align: center; }
+  .hero-badge { margin: 0 auto 24px; }
+  .nav-links { display: none; }
+  .features-grid { grid-template-columns: 1fr; }
+  
+  .dashboard-layout { flex-direction: column; overflow-y: auto; }
+  .sidebar { width: 100%; height: auto; flex-shrink: 0; }
   .top-header { padding: 0 24px; }
-  .search-container { width: 300px; }
+  .search-container { max-width: 100%; }
+  .dashboard-content { padding: 24px; overflow-y: visible; }
+  .categories-grid { grid-template-columns: 1fr; }
+  
+  .entry { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .entry-action { width: 100%; justify-content: space-between; }
 }
 </style>
 </head>
-
 <body>
 
-<div id="splash-screen">
-  <div class="splash-content">
-    <div class="splash-logo-box">🚨</div>
-    <h1 class="splash-title">Emergency Directory</h1>
-    <p class="splash-subtitle"> Emergency Directory · Kigali</p>
-    <div class="loading-bar-container">
-      <div class="loading-bar-fill" id="progress-fill"></div>
+<div id="view-landing" class="view-section active">
+  
+  <header class="landing-header" id="main-header">
+    <div class="nav-container">
+      <a href="#" class="logo" onclick="Router.navigate('landing')">
+        <div class="logo-icon">🚨</div>
+        Directory System
+      </a>
+      <nav class="nav-links">
+        <a href="#how-it-works">How it Works</a>
+        <a href="#capabilities">Capabilities</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="btn btn-primary btn-sm" onclick="Router.navigate('directory')">Open Directory</button>
+      </div>
     </div>
-  </div>
+  </header>
+
+  <section class="hero">
+    <div class="container hero-content">
+      <div class="reveal-up">
+        <div class="hero-badge">System Status: Active</div>
+        <h1>Instant Emergency<br><span>Dispatch Routing</span></h1>
+        <p>A centralized, offline-capable directory for Kigali. Access critical law enforcement, medical centers, and public utilities instantly, directly from your browser.</p>
+        <div class="nav-actions" style="margin-top: 32px; justify-content: flex-start;">
+          <button class="btn btn-primary btn-lg" onclick="Router.navigate('directory')">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
+            Open Directory
+          </button>
+          <a href="#how-it-works" class="btn btn-outline btn-lg">Learn More</a>
+        </div>
+      </div>
+      <div class="hero-visual reveal-up" style="transition-delay: 0.1s;">
+        <div class="mockup-window">
+          <div class="mockup-header">
+            <div class="mockup-dot"></div><div class="mockup-dot"></div><div class="mockup-dot"></div>
+          </div>
+          <img src="https://images.unsplash.com/photo-1584907797015-7554cd315667?w=800&q=80" alt="Emergency dispatch" style="border-radius: 12px; width: 100%; aspect-ratio: 4/3; object-fit: cover;">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how-it-works" class="section section-alt">
+    <div class="container">
+      <div class="section-header reveal-up">
+        <span class="section-label">Execution Protocol</span>
+        <h2 class="section-title">How the Directory Works</h2>
+        <p class="section-desc">A transparent, three-step process designed for high-stress situations. No sign-ups required.</p>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-step reveal-up">
+          <div class="timeline-number">1</div>
+          <div class="timeline-content">
+            <h3><span style="font-size:24px;">🔎</span> Locate</h3>
+            <p>Open the directory and use the lightning-fast search bar, or browse through neatly categorized sections (Emergency, Health, Utilities, Community).</p>
+          </div>
+        </div>
+        <div class="timeline-step reveal-up">
+          <div class="timeline-number">2</div>
+          <div class="timeline-content">
+            <h3><span style="font-size:24px;">🏥</span> Select</h3>
+            <p>Find the correct local authority or hospital. Essential details like operational hours and sector locations are displayed upfront.</p>
+          </div>
+        </div>
+        <div class="timeline-step reveal-up">
+          <div class="timeline-number">3</div>
+          <div class="timeline-content">
+            <h3><span style="font-size:24px;">📞</span> Dispatch</h3>
+            <p>Tap the call button. The system securely hands off the routing to your device's native cellular dialer for immediate connection.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="capabilities" class="section">
+    <div class="container">
+      <div class="section-header reveal-up">
+        <span class="section-label">Core Capabilities</span>
+        <h2 class="section-title">Built for Reliability</h2>
+        <p class="section-desc">Engineered to work seamlessly under poor network conditions and high-stress scenarios.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card reveal-up">
+          <div class="feature-icon">📞</div>
+          <h3>Instant Call Routing</h3>
+          <p>Bypasses web dialers. Tapping a dispatch button immediately triggers your phone's native calling app, saving crucial seconds.</p>
+        </div>
+        <div class="feature-card reveal-up" style="transition-delay: 0.1s">
+          <div class="feature-icon">⚡</div>
+          <h3>Offline Capable</h3>
+          <p>Once loaded, the directory caches locally. You can access phone numbers and search the database even with zero internet connection.</p>
+        </div>
+        <div class="feature-card reveal-up" style="transition-delay: 0.2s">
+          <div class="feature-icon">🔎</div>
+          <h3>Faceted Search Engine</h3>
+          <p>Type "Police" or "Water" and the UI instantly filters out noise, showing only relevant cards without needing to reload the page.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-logo">
+            <div class="logo-icon">🚨</div>
+            Directory System
+          </div>
+          <p class="footer-text">A centralized community resource for instant medical, law enforcement, and utility dispatch in Kigali.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Platform</h4>
+          <ul>
+            <li><a href="#" onclick="Router.navigate('directory')">Open Directory View</a></li>
+            <li><a href="#capabilities">System Capabilities</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="#">Security & Privacy</a></li>
+            <li><a href="#">Terms of Use</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Directory Systems. All rights reserved.</p>
+        <p>Built for the Community</p>
+      </div>
+    </div>
+  </footer>
 </div>
 
-<div id="app-container">
-
-  <aside class="sidebar">
-    <div class="sidebar-header">
-      <div class="brand-icon">🚨</div>
-      <div class="brand-text">
-        <h1>Directory</h1>
-        <p>Kigali Services</p>
-      </div>
-    </div>
-
-    <div class="priority-section">
-      <div class="section-label">Critical Dispatch</div>
-      
-      <div class="priority-card" onclick="window.location.href='tel:112'">
-        <div class="p-icon">🚓</div>
-        <div class="p-title">National Police</div>
-        <div class="p-num">112</div>
-        <a href="tel:112" class="p-action" onclick="event.stopPropagation()">Dispatch Call</a>
-      </div>
-
-      <div class="priority-card" onclick="window.location.href='tel:912'">
-        <div class="p-icon">🚑</div>
-        <div class="p-title">SAMU Ambulance</div>
-        <div class="p-num">912</div>
-        <a href="tel:912" class="p-action" onclick="event.stopPropagation()">Dispatch Call</a>
-      </div>
-
-      <div class="priority-card" onclick="window.location.href='tel:110'">
-        <div class="p-icon">🔥</div>
-        <div class="p-title">Fire Brigade</div>
-        <div class="p-num">110</div>
-        <a href="tel:110" class="p-action" onclick="event.stopPropagation()">Dispatch Call</a>
-      </div>
-    </div>
-
-    <div class="sidebar-footer">
-      Powered by NextWave Kigali<br>System Active & Online
-    </div>
-  </aside>
-
-  <main class="main-area">
+<div id="view-directory" class="view-section">
+  <div class="dashboard-layout">
     
-    <header class="top-header">
-      <div class="page-title">Community Dashboard</div>
-      
-      <div class="search-container">
-        <svg class="search-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-        <input type="text" id="global-search" placeholder="Search facilities, departments, codes..." autocomplete="off">
-        <span class="search-shortcut">Cmd+K</span>
-      </div>
-
-      <div class="user-profile">
-        <div class="user-info" style="text-align: right;">
-          <span class="user-name">Group Six</span>
-          <span class="user-role">System Admin</span>
-        </div>
-        <div class="avatar">IN</div>
-      </div>
-    </header>
-
-    <div class="dashboard-content">
-      
-      <div class="section-header">
+    <aside class="sidebar">
+      <div class="sidebar-header" onclick="Router.navigate('landing')">
+        <div class="brand-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></div>
         <div>
-          <h2>All Departments & Services</h2>
-          <p>Real-time directory for local authorities, healthcare facilities, and utilities.</p>
+          <h1>Back to Home</h1>
+          <p>Exit Directory</p>
         </div>
       </div>
 
-      <div id="no-results">
-        <span>📭</span>
-        <h3>No services found</h3>
-        <p>Try adjusting your search terms or checking for typos.</p>
-      </div>
-
-      <div class="categories-grid" id="directory-grid">
+      <div class="priority-section">
+        <div class="section-label">⭐ Critical Dispatch</div>
         
-        <div class="category-card cat-emergency">
-          <div class="card-header">
-            <div class="card-title-wrap">
-              <div class="cat-icon">🚨</div>
-              <div class="card-title">Law & Emergency</div>
-            </div>
-            <span class="item-count">3 items</span>
+        <div class="p-card-dash" onclick="window.location.href='tel:112'">
+          <span class="p-icon">🚓</span>
+          <div class="p-title">Police</div>
+          <div class="p-num">112</div>
+          <a href="tel:112" class="p-action" onclick="event.stopPropagation()">Call Now</a>
+        </div>
+        <div class="p-card-dash" onclick="window.location.href='tel:912'">
+          <span class="p-icon">🚑</span>
+          <div class="p-title">Ambulance</div>
+          <div class="p-num">912</div>
+          <a href="tel:912" class="p-action" onclick="event.stopPropagation()">Call Now</a>
+        </div>
+        <div class="p-card-dash" onclick="window.location.href='tel:110'">
+          <span class="p-icon">🔥</span>
+          <div class="p-title">Fire</div>
+          <div class="p-num">110</div>
+          <a href="tel:110" class="p-action" onclick="event.stopPropagation()">Call Now</a>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="top-header">
+        <div class="search-container">
+          <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="global-search" placeholder="Search police, hospitals, utilities...">
+        </div>
+      </header>
+
+      <div class="dashboard-content">
+        <div class="dash-header reveal-in">
+          <div>
+            <h2>Community Directory</h2>
+            <p>Real-time routing directory for local authorities and facilities.</p>
           </div>
-          <div class="card-body">
+        </div>
+
+        <div id="no-results">
+          <span>📭</span>
+          <h3>No services found</h3>
+          <p style="color:var(--text-secondary); margin-top:8px;">Try adjusting your search terms or checking for typos.</p>
+        </div>
+
+        <div class="categories-grid" id="directory-grid">
+          
+          <div class="category-card cat-emergency reveal-up">
+            <div class="card-header">
+              <div class="card-title-wrap">
+                <div class="cat-icon">🚨</div>
+                <div class="card-title">Emergency Services</div>
+              </div>
+              <span class="item-count">3 items</span>
+            </div>
             
             <div class="entry">
               <div class="entry-info">
                 <div class="entry-avatar">🚓</div>
                 <div class="entry-details">
                   <span class="entry-name">Rwanda National Police</span>
-                  <div class="entry-meta">
-                    <span class="badge badge-247">24/7 Response</span>
-                    <span>• Kigali Command Center</span>
-                  </div>
+                  <div class="entry-meta"><span class="badge-status active">24/7</span> Kigali Command</div>
                 </div>
               </div>
               <div class="entry-action">
                 <span class="entry-number">112</span>
-                <a href="tel:112" class="btn-call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>Call</a>
+                <a href="tel:112" class="btn-call-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg> Call</a>
               </div>
             </div>
 
             <div class="entry">
               <div class="entry-info">
-                <div class="entry-avatar">🚦</div>
+                <div class="entry-avatar">🚑</div>
                 <div class="entry-details">
-                  <span class="entry-name">Traffic Police Department</span>
-                  <div class="entry-meta">
-                    <span class="badge badge-247">24/7 Response</span>
-                    <span>• Road accidents & blocks</span>
-                  </div>
+                  <span class="entry-name">SAMU Ambulance</span>
+                  <div class="entry-meta"><span class="badge-status active">24/7</span> Medical Emergency</div>
                 </div>
               </div>
               <div class="entry-action">
-                <span class="entry-number">118</span>
-                <a href="tel:118" class="btn-call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>Call</a>
+                <span class="entry-number">912</span>
+                <a href="tel:912" class="btn-call-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg> Call</a>
               </div>
             </div>
 
             <div class="entry">
               <div class="entry-info">
-                <div class="entry-avatar">🛡️</div>
+                <div class="entry-avatar">🔥</div>
                 <div class="entry-details">
-                  <span class="entry-name">RIB Investigation Line</span>
-                  <div class="entry-meta">
-                    <span class="badge badge-247">24/7 Response</span>
-                    <span>• Anonymous Tip Line</span>
-                  </div>
+                  <span class="entry-name">Fire Brigade</span>
+                  <div class="entry-meta"><span class="badge-status active">24/7</span> Kigali City</div>
                 </div>
               </div>
               <div class="entry-action">
-                <span class="entry-number">166</span>
-                <a href="tel:166" class="btn-call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>Call</a>
+                <span class="entry-number">110</span>
+                <a href="tel:110" class="btn-call-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg> Call</a>
               </div>
             </div>
-
           </div>
-        </div>
 
-        <div class="category-card cat-health">
-          <div class="card-header">
-            <div class="card-title-wrap">
-              <div class="cat-icon">🏥</div>
-              <div class="card-title">Healthcare Facilities</div>
+          <div class="category-card cat-health reveal-up" style="transition-delay: 0.1s">
+            <div class="card-header">
+              <div class="card-title-wrap">
+                <div class="cat-icon">🏥</div>
+                <div class="card-title">Health & Medical</div>
+              </div>
+              <span class="item-count">2 items</span>
             </div>
-            <span class="item-count">4 items</span>
-          </div>
-          <div class="card-body">
             
-            <div class="entry">
-              <div class="entry-info">
-                <div class="entry-avatar">🦠</div>
-                <div class="entry-details">
-                  <span class="entry-name">RBC Epidemic Response</span>
-                  <div class="entry-meta">
-                    <span class="badge badge-247">24/7 Active</span>
-                    <span>• Toll Free Support</span>
-                  </div>
-                </div>
-              </div>
-              <div class="entry-action">
-                <span class="entry-number">114</span>
-                <a href="tel:114" class="btn-call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>Call</a>
-              </div>
-            </div>
-
             <div class="entry">
               <div class="entry-info">
                 <div class="entry-avatar">🏥</div>
                 <div class="entry-details">
-                  <span class="entry-name">CHUK Regional Hospital</span>
-                  <div class="entry-meta">
-                    <span class="badge badge-247">24/7 Open</span>
-                    <span>• Central Kigali Area</span>
-                  </div>
+                  <span class="entry-name">CHUK Hospital</span>
+                  <div class="entry-meta"><span class="badge-status active">24/7</span> Reference</div>
                 </div>
               </div>
               <div class="entry-action">
                 <span class="entry-number">0788 303 009</span>
-                <a href="tel:0788303009" class="btn-call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>Call</a>
+                <a href="tel:0788303009" class="btn-call-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg> Call</a>
               </div>
             </div>
 
@@ -535,62 +542,36 @@ mark { background: #FEF08A; color: #854D0E; padding: 0 2px; border-radius: 2px; 
                 <div class="entry-avatar">🏥</div>
                 <div class="entry-details">
                   <span class="entry-name">King Faisal Hospital</span>
-                  <div class="entry-meta">
-                    <span class="badge badge-247">24/7 Open</span>
-                    <span>• Kacyiru District</span>
-                  </div>
+                  <div class="entry-meta"><span class="badge-status active">24/7</span> Private</div>
                 </div>
               </div>
               <div class="entry-action">
-                <span class="entry-number">3939</span>
-                <a href="tel:3939" class="btn-call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>Call</a>
+                <span class="entry-number">0252 582 421</span>
+                <a href="tel:0252582421" class="btn-call-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg> Call</a>
               </div>
             </div>
-
-            <div class="entry">
-              <div class="entry-info">
-                <div class="entry-avatar">🛑</div>
-                <div class="entry-details">
-                  <span class="entry-name">Isange One Stop Center</span>
-                  <div class="entry-meta">
-                    <span class="badge badge-247">24/7 Support</span>
-                    <span>• GBV & Abuse Handling</span>
-                  </div>
-                </div>
-              </div>
-              <div class="entry-action">
-                <span class="entry-number">3029</span>
-                <a href="tel:3029" class="btn-call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>Call</a>
-              </div>
-            </div>
-
           </div>
-        </div>
 
-        <div class="category-card cat-water">
-          <div class="card-header">
-            <div class="card-title-wrap">
-              <div class="cat-icon">⚡</div>
-              <div class="card-title">Public Utilities</div>
+          <div class="category-card cat-water reveal-up" style="transition-delay: 0.2s">
+            <div class="card-header">
+              <div class="card-title-wrap">
+                <div class="cat-icon">💧</div>
+                <div class="card-title">Water & Utilities</div>
+              </div>
+              <span class="item-count">2 items</span>
             </div>
-            <span class="item-count">2 items</span>
-          </div>
-          <div class="card-body">
             
             <div class="entry">
               <div class="entry-info">
                 <div class="entry-avatar">💧</div>
                 <div class="entry-details">
-                  <span class="entry-name">WASAC Water Support</span>
-                  <div class="entry-meta">
-                    <span class="badge badge-day">Standard Hrs</span>
-                    <span>• Outages & Leakages</span>
-                  </div>
+                  <span class="entry-name">WASAC Water Service</span>
+                  <div class="entry-meta"><span class="badge-status">Mon-Fri</span> Leakages</div>
                 </div>
               </div>
               <div class="entry-action">
                 <span class="entry-number">3131</span>
-                <a href="tel:3131" class="btn-call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>Call</a>
+                <a href="tel:3131" class="btn-call-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg> Call</a>
               </div>
             </div>
 
@@ -598,116 +579,156 @@ mark { background: #FEF08A; color: #854D0E; padding: 0 2px; border-radius: 2px; 
               <div class="entry-info">
                 <div class="entry-avatar">⚡</div>
                 <div class="entry-details">
-                  <span class="entry-name">REG Electricity Grid</span>
-                  <div class="entry-meta">
-                    <span class="badge badge-247">24/7 Support</span>
-                    <span>• Power Outages</span>
-                  </div>
+                  <span class="entry-name">REG Electricity</span>
+                  <div class="entry-meta"><span class="badge-status active">24/7</span> Power outage</div>
                 </div>
               </div>
               <div class="entry-action">
-                <span class="entry-number">3535</span>
-                <a href="tel:3535" class="btn-call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>Call</a>
+                <span class="entry-number">5055</span>
+                <a href="tel:5055" class="btn-call-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg> Call</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="category-card cat-community reveal-up" style="transition-delay: 0.3s">
+            <div class="card-header">
+              <div class="card-title-wrap">
+                <div class="cat-icon">🏘️</div>
+                <div class="card-title">Community Services</div>
+              </div>
+              <span class="item-count">2 items</span>
+            </div>
+            
+            <div class="entry">
+              <div class="entry-info">
+                <div class="entry-avatar">👮</div>
+                <div class="entry-details">
+                  <span class="entry-name">Local Leader</span>
+                  <div class="entry-meta"><span class="badge-status">Daytime</span> Sector Office</div>
+                </div>
+              </div>
+              <div class="entry-action">
+                <span class="entry-number">0788 000 001</span>
+                <a href="tel:0788000001" class="btn-call-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg> Call</a>
               </div>
             </div>
 
+            <div class="entry">
+              <div class="entry-info">
+                <div class="entry-avatar">🛡️</div>
+                <div class="entry-details">
+                  <span class="entry-name">RIB Tip Line</span>
+                  <div class="entry-meta"><span class="badge-status active">24/7</span> Anonymous</div>
+                </div>
+              </div>
+              <div class="entry-action">
+                <span class="entry-number">997</span>
+                <a href="tel:997" class="btn-call-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg> Call</a>
+              </div>
+            </div>
           </div>
-        </div>
 
-      </div></div></main>
+        </div>
+      </div>
+    </main>
+  </div>
 </div>
 
 <script>
-// 1. Splash Screen & Initialization Logic
-window.addEventListener("load", () => {
-  const splash = document.getElementById("splash-screen");
-  const progressFill = document.getElementById("progress-fill");
-  const appContainer = document.getElementById("app-container");
-
-  // Animate progress bar to 100%
-  setTimeout(() => {
-    progressFill.style.width = "100%";
-  }, 100);
-
-  // Remove splash and reveal UI after loading animation
-  setTimeout(() => {
-    splash.classList.add("hidden");
-    appContainer.classList.add("loaded");
-    
-    // Clean up DOM after fade out
-    setTimeout(() => { splash.remove(); }, 800);
-  }, 1800); // 1.8 seconds loading experience
-});
-
-// 2. Global Keyboard Shortcut for Search (Cmd+K or Ctrl+K)
-document.addEventListener('keydown', (e) => {
-  if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-    e.preventDefault();
-    document.getElementById('global-search').focus();
+/* ============================================================
+   ROUTING & ANIMATIONS
+============================================================ */
+const Router = {
+  navigate(viewId) {
+    document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+    document.getElementById('view-' + viewId).classList.add('active');
+    window.scrollTo(0,0);
   }
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Sticky Header
+  window.addEventListener('scroll', () => {
+    const header = document.getElementById('main-header');
+    if (header) {
+      header.classList.toggle('scrolled', window.scrollY > 20);
+    }
+  });
+
+  // Intersection Observer for scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target); 
+      }
+    });
+  }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+  
+  document.querySelectorAll('.reveal-up, .reveal-in').forEach(el => observer.observe(el));
 });
 
-// 3. Desktop Optimized Search Logic
+/* ============================================================
+   SEARCH LOGIC (Pure Emergency Directory Logic)
+============================================================ */
 const searchInput = document.getElementById("global-search");
 const grid = document.getElementById("directory-grid");
 const noResults = document.getElementById("no-results");
 
-searchInput.addEventListener("input", function(e) {
-  const query = e.target.value.toLowerCase().trim();
-  const cards = document.querySelectorAll(".category-card");
-  let globalFound = 0;
+if (searchInput) {
+  searchInput.addEventListener("input", function(e) {
+    const query = e.target.value.toLowerCase().trim();
+    const cards = document.querySelectorAll(".category-card");
+    let globalFound = 0;
 
-  cards.forEach(card => {
-    const entries = card.querySelectorAll(".entry");
-    let cardFoundCount = 0;
+    cards.forEach(card => {
+      const entries = card.querySelectorAll(".entry");
+      let cardFoundCount = 0;
 
-    entries.forEach(entry => {
-      // Find elements to highlight or search within
-      const nameEl = entry.querySelector('.entry-name');
-      const detailsEl = entry.querySelector('.entry-details');
-      const text = detailsEl.textContent.toLowerCase();
-      
-      // Basic text reset
-      nameEl.innerHTML = nameEl.textContent;
-
-      if (text.includes(query)) {
-        entry.style.display = "flex";
-        cardFoundCount++;
-        globalFound++;
+      entries.forEach(entry => {
+        const nameEl = entry.querySelector('.entry-name');
+        const detailsEl = entry.querySelector('.entry-details');
+        const text = detailsEl.textContent.toLowerCase();
         
-        // Add highlight markup if query isn't empty
-        if (query.length > 1) {
-          const regex = new RegExp(`(${query})`, "gi");
-          nameEl.innerHTML = nameEl.textContent.replace(regex, "<mark>$1</mark>");
+        // Reset highlights
+        nameEl.innerHTML = nameEl.textContent;
+
+        if (text.includes(query)) {
+          entry.style.display = "flex";
+          cardFoundCount++;
+          globalFound++;
+          
+          if (query.length > 1) {
+            const regex = new RegExp(`(${query})`, "gi");
+            nameEl.innerHTML = nameEl.textContent.replace(regex, "<mark>$1</mark>");
+          }
+        } else {
+          entry.style.display = "none";
         }
+      });
+
+      // Hide entire category card if no matches inside
+      if (query !== "" && cardFoundCount === 0) {
+        card.style.display = "none";
       } else {
-        entry.style.display = "none";
+        card.style.display = "block";
+        const countLabel = card.querySelector(".item-count");
+        if (countLabel) {
+          countLabel.textContent = query === "" ? `${entries.length} items` : `${cardFoundCount} found`;
+        }
       }
     });
 
-    // Hide entire card if no entries match inside it
-    if (query !== "" && cardFoundCount === 0) {
-      card.style.display = "none";
+    // Toggle "No Results" message
+    if (query && globalFound === 0) {
+      grid.style.display = "none";
+      noResults.style.display = "block";
     } else {
-      card.style.display = "block";
-      // Update item count dynamically
-      const countLabel = card.querySelector(".item-count");
-      countLabel.textContent = query === "" 
-        ? `${entries.length} items` 
-        : `${cardFoundCount} found`;
+      grid.style.display = "grid";
+      noResults.style.display = "none";
     }
   });
-
-  // Toggle No Results view and Grid view
-  if (query && globalFound === 0) {
-    grid.style.display = "none";
-    noResults.style.display = "block";
-  } else {
-    grid.style.display = "grid";
-    noResults.style.display = "none";
-  }
-});
+}
 </script>
-
 </body>
 </html>
