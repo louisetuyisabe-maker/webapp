@@ -4,253 +4,765 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="Emergency contacts for your community">
-<title> · Emergency Contacts</title>
+<title>Emergency Contacts — Kigali</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
+
 :root{
-  --red:#c0392b;--red2:#e74c3c;--green:#1a6b3c;--green2:#27ae60;
-  --blue:#1a4a7c;--amber:#d4850a;
-  --bg:#f7f5f0;--card:#fff;--border:#ddd;
-  --text:#111;--muted:#555;--light:#f0ede8;
+  /* TCX Healthcare palette */
+  --primary:#0A3D6B;
+  --primary-dark:#072E52;
+  --primary-light:#EBF3FC;
+  --accent:#E8320A;
+  --accent-soft:#FEF0ED;
+  --green:#0C6B3F;
+  --green-soft:#E8F5EE;
+  --amber:#B45309;
+  --amber-soft:#FEF3E2;
+  --slate:#1E3148;
+  --slate-soft:#EDF1F7;
+
+  --bg:#F4F7FB;
+  --surface:#FFFFFF;
+  --border:#D8E4F0;
+  --border-light:#EDF1F7;
+  --text:#0D1C2E;
+  --text-secondary:#4A6480;
+  --text-muted:#7A96B0;
+
+  --radius-sm:6px;
+  --radius-md:10px;
+  --radius-lg:16px;
+  --shadow-sm:0 1px 3px rgba(10,61,107,.06), 0 1px 2px rgba(10,61,107,.04);
+  --shadow-md:0 4px 12px rgba(10,61,107,.08), 0 2px 4px rgba(10,61,107,.04);
 }
-body{font-family:Georgia,serif;background:var(--bg);color:var(--text);font-size:16px;line-height:1.5}
 
-header{background:var(--red);color:#fff;padding:12px 16px}
-header h1{font-size:18px;font-weight:bold}
-header p{font-size:12px;opacity:.85;margin-top:2px}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  font-size:15px;
+  line-height:1.55;
+  min-height:100vh;
+}
 
-/* Search */
-#searchbox{width:100%;padding:12px 14px;font-size:16px;border:2px solid var(--red)}
-.search-wrap{padding:10px 12px;background:var(--light)}
-#no-results{display:none;padding:20px;text-align:center;color:var(--muted)}
+/* ── HEADER ────────────────────────────── */
+.app-header{
+  background:var(--primary);
+  padding:0 16px;
+  position:sticky;
+  top:0;
+  z-index:100;
+  box-shadow:0 2px 12px rgba(7,46,82,.25);
+}
+.header-inner{
+  max-width:520px;
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px 0;
+  gap:12px;
+}
+.header-brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.header-icon{
+  width:36px;height:36px;
+  background:rgba(255,255,255,.15);
+  border-radius:var(--radius-sm);
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;
+  flex-shrink:0;
+}
+.header-title{
+  color:#fff;
+  font-size:15px;
+  font-weight:600;
+  letter-spacing:.01em;
+  line-height:1.25;
+}
+.header-sub{
+  color:rgba(255,255,255,.6);
+  font-size:11px;
+  font-weight:400;
+  letter-spacing:.03em;
+  text-transform:uppercase;
+  margin-top:1px;
+}
+.header-badge{
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.2);
+  border-radius:20px;
+  padding:4px 10px;
+  color:rgba(255,255,255,.85);
+  font-size:11px;
+  font-weight:500;
+  white-space:nowrap;
+  flex-shrink:0;
+}
 
-/* Priority */
-.priority{background:var(--red);padding:10px 12px}
-.priority-label{color:#ffc;font-size:11px;text-transform:uppercase;margin-bottom:6px}
-.priority-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.p-card{background:rgba(0,0,0,.35);padding:8px;text-align:center}
-.p-card a{color:#fff;text-decoration:none;display:block}
-.p-name{font-size:11px;opacity:.9}
-.p-num{font-size:20px;font-weight:bold}
+/* ── PRIORITY STRIP ─────────────────────── */
+.priority-strip{
+  background:linear-gradient(135deg,var(--accent) 0%,#C0200A 100%);
+  padding:16px;
+}
+.priority-inner{max-width:520px;margin:0 auto;}
+.priority-label{
+  color:rgba(255,255,255,.7);
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  margin-bottom:10px;
+  display:flex;align-items:center;gap:6px;
+}
+.priority-label::before{
+  content:'';
+  width:6px;height:6px;
+  background:#FFD166;
+  border-radius:50%;
+  display:inline-block;
+}
+.priority-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+}
+.p-card{
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:var(--radius-md);
+  padding:12px 8px;
+  text-align:center;
+  transition:background .15s,transform .12s;
+  cursor:pointer;
+}
+.p-card:active{transform:scale(.96);}
+.p-card a{
+  color:#fff;
+  text-decoration:none;
+  display:block;
+}
+.p-card-icon{
+  font-size:20px;
+  margin-bottom:4px;
+  display:block;
+}
+.p-card-name{
+  font-size:10px;
+  font-weight:500;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.75);
+  margin-bottom:6px;
+}
+.p-card-num{
+  font-family:'DM Mono',monospace;
+  font-size:22px;
+  font-weight:500;
+  color:#fff;
+  letter-spacing:.02em;
+}
 
-/* Categories */
-.cat-header{background:var(--blue);color:#fff;padding:8px 12px;cursor:pointer;display:flex;justify-content:space-between}
-.cat-header.green{background:var(--green)}
-.cat-header.amber{background:var(--amber)}
-.cat-header.slate{background:#2c3e50}
+/* ── SEARCH ─────────────────────────────── */
+.search-wrap{
+  background:var(--surface);
+  padding:12px 16px;
+  border-bottom:1px solid var(--border-light);
+  position:sticky;
+  top:64px;
+  z-index:90;
+  box-shadow:var(--shadow-sm);
+}
+.search-inner{
+  max-width:520px;
+  margin:0 auto;
+  position:relative;
+}
+.search-icon{
+  position:absolute;
+  left:12px;top:50%;
+  transform:translateY(-50%);
+  color:var(--text-muted);
+  font-size:14px;
+  pointer-events:none;
+}
+#searchbox{
+  width:100%;
+  padding:10px 12px 10px 36px;
+  font-size:14px;
+  font-family:'DM Sans',sans-serif;
+  border:1.5px solid var(--border);
+  border-radius:var(--radius-md);
+  background:var(--bg);
+  color:var(--text);
+  outline:none;
+  transition:border-color .15s,box-shadow .15s;
+  -webkit-appearance:none;
+}
+#searchbox::placeholder{color:var(--text-muted);}
+#searchbox:focus{
+  border-color:var(--primary);
+  box-shadow:0 0 0 3px rgba(10,61,107,.1);
+  background:#fff;
+}
 
-/* Entries */
-.entries{background:#fff}
-.entry{border-bottom:1px solid var(--border);padding:10px 12px;display:flex;justify-content:space-between}
-.entry-name{font-weight:bold;font-size:15px}
-.entry-loc,.entry-hours{font-size:12px;color:var(--muted)}
-.call-btn{background:var(--green2);color:#fff;padding:7px 12px;text-decoration:none;font-weight:bold}
-.entry-num{font-size:12px;color:var(--muted)}
+/* ── CONTENT ─────────────────────────────── */
+.content{
+  max-width:520px;
+  margin:0 auto;
+  padding:16px 16px 80px;
+}
 
-.hidden{display:none}
+#no-results{
+  display:none;
+  padding:40px 20px;
+  text-align:center;
+  color:var(--text-muted);
+}
+#no-results svg{margin-bottom:12px;opacity:.4;}
+#no-results p{font-size:14px;}
 
-footer{padding:16px;font-size:11px;color:var(--muted);text-align:center;background:var(--light)}
+/* ── CATEGORY ────────────────────────────── */
+.category{
+  background:var(--surface);
+  border:1px solid var(--border-light);
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+  margin-bottom:12px;
+  box-shadow:var(--shadow-sm);
+}
+
+.cat-header{
+  padding:13px 16px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  user-select:none;
+  transition:background .12s;
+  border-bottom:1px solid var(--border-light);
+}
+.cat-header:active{opacity:.85;}
+
+.cat-header-left{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.cat-dot{
+  width:8px;height:8px;
+  border-radius:50%;
+  flex-shrink:0;
+}
+.cat-title{
+  font-weight:600;
+  font-size:13px;
+  letter-spacing:.01em;
+}
+.cat-count{
+  font-size:11px;
+  font-weight:500;
+  padding:2px 7px;
+  border-radius:12px;
+}
+.cat-chevron{
+  transition:transform .2s;
+  color:var(--text-muted);
+  font-size:12px;
+}
+.cat-header.collapsed .cat-chevron{transform:rotate(-90deg);}
+
+/* color themes per category */
+.cat-emergency .cat-header{background:var(--accent-soft);}
+.cat-emergency .cat-dot{background:var(--accent);}
+.cat-emergency .cat-title{color:var(--accent);}
+.cat-emergency .cat-count{background:rgba(232,50,10,.1);color:var(--accent);}
+
+.cat-health .cat-header{background:var(--green-soft);}
+.cat-health .cat-dot{background:var(--green);}
+.cat-health .cat-title{color:var(--green);}
+.cat-health .cat-count{background:rgba(12,107,63,.1);color:var(--green);}
+
+.cat-water .cat-header{background:var(--amber-soft);}
+.cat-water .cat-dot{background:var(--amber);}
+.cat-water .cat-title{color:var(--amber);}
+.cat-water .cat-count{background:rgba(180,83,9,.1);color:var(--amber);}
+
+.cat-community .cat-header{background:var(--slate-soft);}
+.cat-community .cat-dot{background:var(--slate);}
+.cat-community .cat-title{color:var(--slate);}
+.cat-community .cat-count{background:rgba(30,49,72,.1);color:var(--slate);}
+
+/* ── ENTRIES ─────────────────────────────── */
+.entries{}
+.entry{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:13px 16px;
+  border-bottom:1px solid var(--border-light);
+  gap:12px;
+  transition:background .1s;
+}
+.entry:last-child{border-bottom:none;}
+.entry:active{background:var(--bg);}
+
+.entry-info{flex:1;min-width:0;}
+.entry-name{
+  font-weight:600;
+  font-size:14px;
+  color:var(--text);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.entry-meta{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:3px;
+  flex-wrap:wrap;
+}
+.entry-loc{
+  font-size:12px;
+  color:var(--text-secondary);
+}
+.entry-divider{
+  width:3px;height:3px;
+  border-radius:50%;
+  background:var(--border);
+  flex-shrink:0;
+}
+.entry-hours{
+  font-size:11px;
+  font-weight:500;
+  padding:2px 7px;
+  border-radius:10px;
+}
+.hours-247{
+  background:#E8F5EE;
+  color:#0C6B3F;
+}
+.hours-day{
+  background:#FEF3E2;
+  color:#B45309;
+}
+
+.entry-action{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:4px;
+  flex-shrink:0;
+}
+.call-btn{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  background:var(--green);
+  color:#fff;
+  text-decoration:none;
+  padding:8px 14px;
+  border-radius:var(--radius-sm);
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  transition:background .12s,transform .1s;
+  white-space:nowrap;
+}
+.call-btn:active{background:var(--primary-dark);transform:scale(.96);}
+.call-btn svg{width:13px;height:13px;flex-shrink:0;}
+.entry-num{
+  font-family:'DM Mono',monospace;
+  font-size:11px;
+  color:var(--text-muted);
+  letter-spacing:.04em;
+}
+
+/* emergency category — red call buttons */
+.cat-emergency .call-btn{background:var(--accent);}
+.cat-emergency .call-btn:active{background:#a02408;}
+
+/* ── HIDDEN ──────────────────────────────── */
+.entries.hidden{display:none;}
+
+/* ── FOOTER ──────────────────────────────── */
+footer{
+  background:var(--surface);
+  border-top:1px solid var(--border-light);
+  padding:16px;
+  text-align:center;
+}
+.footer-inner{
+  max-width:520px;
+  margin:0 auto;
+}
+.footer-tips{
+  display:flex;
+  justify-content:center;
+  gap:20px;
+  flex-wrap:wrap;
+  margin-bottom:8px;
+}
+.footer-tip{
+  display:flex;align-items:center;gap:5px;
+  font-size:11px;
+  color:var(--text-muted);
+}
+.footer-copy{
+  font-size:10px;
+  color:var(--text-muted);
+  opacity:.6;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+}
 </style>
 </head>
 
 <body>
 
-<header>
-  <h1>🚨 Emergency Directory — Kigali</h1>
-  <p>📞 Tap any number to call instantly</p>
+<!-- HEADER -->
+<header class="app-header">
+  <div class="header-inner">
+    <div class="header-brand">
+      <div class="header-icon">🚨</div>
+      <div>
+        <div class="header-title">Emergency Directory</div>
+        <div class="header-sub">Kigali · Community</div>
+      </div>
+    </div>
+    <div class="header-badge">📞 Tap to Call</div>
+  </div>
 </header>
 
 <!-- PRIORITY -->
-<div class="priority">
-  <div class="priority-label">⭐ Always Visible — Critical Numbers</div>
+<div class="priority-strip">
+  <div class="priority-inner">
+    <div class="priority-label">Critical Numbers — Always Visible</div>
+    <div class="priority-grid">
 
-  <div class="priority-grid">
+      <div class="p-card">
+        <a href="tel:112">
+          <span class="p-card-icon">🚓</span>
+          <div class="p-card-name">Police</div>
+          <div class="p-card-num">112</div>
+        </a>
+      </div>
 
-    <div class="p-card">
-      <a href="tel:112">
-        <div class="p-name">🚓 Police</div>
-        <div class="p-num">112</div>
-      </a>
+      <div class="p-card">
+        <a href="tel:912">
+          <span class="p-card-icon">🚑</span>
+          <div class="p-card-name">Ambulance</div>
+          <div class="p-card-num">912</div>
+        </a>
+      </div>
+
+      <div class="p-card">
+        <a href="tel:110">
+          <span class="p-card-icon">🔥</span>
+          <div class="p-card-name">Fire</div>
+          <div class="p-card-num">110</div>
+        </a>
+      </div>
+
     </div>
-
-    <div class="p-card">
-      <a href="tel:912">
-        <div class="p-name">🚑 Ambulance</div>
-        <div class="p-num">912</div>
-      </a>
-    </div>
-
-    <div class="p-card">
-      <a href="tel:110">
-        <div class="p-name">🔥 Fire</div>
-        <div class="p-num">110</div>
-      </a>
-    </div>
-
   </div>
 </div>
 
 <!-- SEARCH -->
 <div class="search-wrap">
-  <input id="searchbox" type="search" placeholder="🔎 Search services...">
+  <div class="search-inner">
+    <span class="search-icon">🔎</span>
+    <input id="searchbox" type="search" placeholder="Search services, hospitals, utilities…">
+  </div>
 </div>
 
-<div id="no-results">No results found</div>
+<!-- CONTENT -->
+<div class="content">
 
-<!-- EMERGENCY -->
-<div class="cat-header" onclick="toggle('emergency')">
-  <span>🚨 Emergency Services</span><span>▲</span>
-</div>
+  <div id="no-results">
+    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" display="block" style="margin:0 auto 12px">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
+    </svg>
+    <p>No results found</p>
+  </div>
 
-<div class="entries" id="emergency">
-
-  <div class="entry">
-    <div>
-      <div class="entry-name">🚓 Rwanda National Police</div>
-      <div class="entry-loc">Kigali City Command</div>
-      <div class="entry-hours">24/7</div>
+  <!-- EMERGENCY -->
+  <div class="category cat-emergency">
+    <div class="cat-header" onclick="toggle(this,'emergency-entries')">
+      <div class="cat-header-left">
+        <span class="cat-dot"></span>
+        <span class="cat-title">🚨 Emergency Services</span>
+        <span class="cat-count">3</span>
+      </div>
+      <span class="cat-chevron">▾</span>
     </div>
-    <div>
-      <a class="call-btn" href="tel:112">📞 CALL</a>
-      <div class="entry-num">112</div>
+
+    <div class="entries" id="emergency-entries">
+
+      <div class="entry">
+        <div class="entry-info">
+          <div class="entry-name">🚓 Rwanda National Police</div>
+          <div class="entry-meta">
+            <span class="entry-loc">Kigali City Command</span>
+            <span class="entry-divider"></span>
+            <span class="entry-hours hours-247">24/7</span>
+          </div>
+        </div>
+        <div class="entry-action">
+          <a class="call-btn" href="tel:112">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
+            Call
+          </a>
+          <span class="entry-num">112</span>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-info">
+          <div class="entry-name">🚑 SAMU Ambulance</div>
+          <div class="entry-meta">
+            <span class="entry-loc">Emergency Medical</span>
+            <span class="entry-divider"></span>
+            <span class="entry-hours hours-247">24/7</span>
+          </div>
+        </div>
+        <div class="entry-action">
+          <a class="call-btn" href="tel:912">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
+            Call
+          </a>
+          <span class="entry-num">912</span>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-info">
+          <div class="entry-name">🔥 Fire Brigade</div>
+          <div class="entry-meta">
+            <span class="entry-loc">Kigali City</span>
+            <span class="entry-divider"></span>
+            <span class="entry-hours hours-247">24/7</span>
+          </div>
+        </div>
+        <div class="entry-action">
+          <a class="call-btn" href="tel:110">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
+            Call
+          </a>
+          <span class="entry-num">110</span>
+        </div>
+      </div>
+
     </div>
   </div>
 
-  <div class="entry">
-    <div>
-      <div class="entry-name">🚑 SAMU Ambulance</div>
-      <div class="entry-loc">Emergency Medical</div>
-      <div class="entry-hours">24/7</div>
+  <!-- HEALTH -->
+  <div class="category cat-health">
+    <div class="cat-header" onclick="toggle(this,'health-entries')">
+      <div class="cat-header-left">
+        <span class="cat-dot"></span>
+        <span class="cat-title">🏥 Health & Medical</span>
+        <span class="cat-count">2</span>
+      </div>
+      <span class="cat-chevron">▾</span>
     </div>
-    <div>
-      <a class="call-btn" href="tel:912">📞 CALL</a>
-      <div class="entry-num">912</div>
+
+    <div class="entries" id="health-entries">
+
+      <div class="entry">
+        <div class="entry-info">
+          <div class="entry-name">🏥 CHUK Hospital</div>
+          <div class="entry-meta">
+            <span class="entry-loc">Kigali</span>
+            <span class="entry-divider"></span>
+            <span class="entry-hours hours-247">24/7</span>
+          </div>
+        </div>
+        <div class="entry-action">
+          <a class="call-btn" href="tel:0788303009">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
+            Call
+          </a>
+          <span class="entry-num">0788 303 009</span>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-info">
+          <div class="entry-name">🏥 King Faisal Hospital</div>
+          <div class="entry-meta">
+            <span class="entry-loc">Kigali</span>
+            <span class="entry-divider"></span>
+            <span class="entry-hours hours-247">24/7</span>
+          </div>
+        </div>
+        <div class="entry-action">
+          <a class="call-btn" href="tel:0252582421">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
+            Call
+          </a>
+          <span class="entry-num">0252 582 421</span>
+        </div>
+      </div>
+
     </div>
   </div>
 
-  <div class="entry">
-    <div>
-      <div class="entry-name">🔥 Fire Brigade</div>
-      <div class="entry-loc">Kigali City</div>
-      <div class="entry-hours">24/7</div>
+  <!-- WATER -->
+  <div class="category cat-water">
+    <div class="cat-header" onclick="toggle(this,'water-entries')">
+      <div class="cat-header-left">
+        <span class="cat-dot"></span>
+        <span class="cat-title">💧 Water & Utilities</span>
+        <span class="cat-count">2</span>
+      </div>
+      <span class="cat-chevron">▾</span>
     </div>
-    <div>
-      <a class="call-btn" href="tel:110">📞 CALL</a>
-      <div class="entry-num">110</div>
+
+    <div class="entries" id="water-entries">
+
+      <div class="entry">
+        <div class="entry-info">
+          <div class="entry-name">💧 WASAC Water Service</div>
+          <div class="entry-meta">
+            <span class="entry-loc">Leakage & supply issues</span>
+            <span class="entry-divider"></span>
+            <span class="entry-hours hours-day">Mon–Fri</span>
+          </div>
+        </div>
+        <div class="entry-action">
+          <a class="call-btn" href="tel:3131">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
+            Call
+          </a>
+          <span class="entry-num">3131</span>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-info">
+          <div class="entry-name">⚡ REG Electricity</div>
+          <div class="entry-meta">
+            <span class="entry-loc">Power outage support</span>
+            <span class="entry-divider"></span>
+            <span class="entry-hours hours-247">24/7</span>
+          </div>
+        </div>
+        <div class="entry-action">
+          <a class="call-btn" href="tel:5055">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
+            Call
+          </a>
+          <span class="entry-num">5055</span>
+        </div>
+      </div>
+
     </div>
   </div>
 
-</div>
-
-<!-- HEALTH -->
-<div class="cat-header green" onclick="toggle('health')">
-  <span>🏥 Health & Medical</span><span>▲</span>
-</div>
-
-<div class="entries" id="health">
-
-  <div class="entry">
-    <div>
-      <div class="entry-name">🏥 CHUK Hospital</div>
-      <div class="entry-loc">Kigali</div>
-      <div class="entry-hours">24/7</div>
+  <!-- COMMUNITY -->
+  <div class="category cat-community">
+    <div class="cat-header" onclick="toggle(this,'community-entries')">
+      <div class="cat-header-left">
+        <span class="cat-dot"></span>
+        <span class="cat-title">🏘️ Community Services</span>
+        <span class="cat-count">2</span>
+      </div>
+      <span class="cat-chevron">▾</span>
     </div>
-    <div><a class="call-btn" href="tel:0788303009">📞 CALL</a><div class="entry-num">0788 303 009</div></div>
+
+    <div class="entries" id="community-entries">
+
+      <div class="entry">
+        <div class="entry-info">
+          <div class="entry-name">👮 Local Leader</div>
+          <div class="entry-meta">
+            <span class="entry-loc">Sector Office</span>
+            <span class="entry-divider"></span>
+            <span class="entry-hours hours-day">Working hours</span>
+          </div>
+        </div>
+        <div class="entry-action">
+          <a class="call-btn" href="tel:0788000001">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
+            Call
+          </a>
+          <span class="entry-num">0788 000 001</span>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-info">
+          <div class="entry-name">🛡️ RIB Tip Line</div>
+          <div class="entry-meta">
+            <span class="entry-loc">Anonymous reporting</span>
+            <span class="entry-divider"></span>
+            <span class="entry-hours hours-247">24/7</span>
+          </div>
+        </div>
+        <div class="entry-action">
+          <a class="call-btn" href="tel:997">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11 19.79 19.79 0 01.05 2.38 2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
+            Call
+          </a>
+          <span class="entry-num">997</span>
+        </div>
+      </div>
+
+    </div>
   </div>
 
-  <div class="entry">
-    <div>
-      <div class="entry-name">🏥 King Faisal Hospital</div>
-      <div class="entry-loc">Kigali</div>
-      <div class="entry-hours">24/7</div>
-    </div>
-    <div><a class="call-btn" href="tel:0252582421">📞 CALL</a><div class="entry-num">0252 582 421</div></div>
-  </div>
-
-</div>
-
-<!-- WATER -->
-<div class="cat-header amber" onclick="toggle('water')">
-  <span>💧 Water & Utilities</span><span>▲</span>
-</div>
-
-<div class="entries" id="water">
-
-  <div class="entry">
-    <div>
-      <div class="entry-name">💧 WASAC Water Service</div>
-      <div class="entry-loc">Leakage & supply issues</div>
-      <div class="entry-hours">Mon–Fri</div>
-    </div>
-    <div><a class="call-btn" href="tel:3131">📞 CALL</a><div class="entry-num">3131</div></div>
-  </div>
-
-  <div class="entry">
-    <div>
-      <div class="entry-name">⚡ REG Electricity</div>
-      <div class="entry-loc">Power outage support</div>
-      <div class="entry-hours">24/7</div>
-    </div>
-    <div><a class="call-btn" href="tel:5055">📞 CALL</a><div class="entry-num">5055</div></div>
-  </div>
-
-</div>
-
-<!-- COMMUNITY -->
-<div class="cat-header slate" onclick="toggle('community')">
-  <span>🏘️ Community Services</span><span>▲</span>
-</div>
-
-<div class="entries" id="community">
-
-  <div class="entry">
-    <div>
-      <div class="entry-name">👮 Local Leader</div>
-      <div class="entry-loc">Sector Office</div>
-      <div class="entry-hours">Working hours</div>
-    </div>
-    <div><a class="call-btn" href="tel:0788000001">📞 CALL</a><div class="entry-num">0788 000 001</div></div>
-  </div>
-
-  <div class="entry">
-    <div>
-      <div class="entry-name">🛡️ RIB Tip Line</div>
-      <div class="entry-loc">Anonymous reporting</div>
-      <div class="entry-hours">24/7</div>
-    </div>
-    <div><a class="call-btn" href="tel:997">📞 CALL</a><div class="entry-num">997</div></div>
-  </div>
-
-</div>
+</div><!-- /content -->
 
 <footer>
-  📌 Save this page to your home screen for offline use<br>
-  ⚡ Works on 2G — lightweight emergency system
+  <div class="footer-inner">
+    <div class="footer-tips">
+      <span class="footer-tip">📌 Save to home screen for offline use</span>
+      <span class="footer-tip">⚡ Works on 2G networks</span>
+    </div>
+    <div class="footer-copy">TCX Community · Kigali Emergency Directory</div>
+  </div>
 </footer>
 
 <script>
-function toggle(id){
-  var el=document.getElementById(id);
-  el.classList.toggle('hidden');
+function toggle(headerEl, entriesId) {
+  var entries = document.getElementById(entriesId);
+  var isHidden = entries.classList.toggle('hidden');
+  headerEl.classList.toggle('collapsed', isHidden);
 }
 
-document.getElementById("searchbox").addEventListener("input",function(){
-  let q=this.value.toLowerCase();
-  let entries=document.querySelectorAll(".entry");
-  let found=0;
+document.getElementById("searchbox").addEventListener("input", function() {
+  var q = this.value.toLowerCase().trim();
+  var entries = document.querySelectorAll(".entry");
+  var found = 0;
 
-  entries.forEach(e=>{
-    let text=e.innerText.toLowerCase();
-    if(text.includes(q)){
-      e.style.display="";
+  entries.forEach(function(e) {
+    var text = e.innerText.toLowerCase();
+    if (text.includes(q)) {
+      e.style.display = "";
       found++;
-    }else{
-      e.style.display="none";
+      // ensure parent entries container is visible when searching
+      var parent = e.closest(".entries");
+      if (parent) parent.classList.remove("hidden");
+      var header = parent && parent.previousElementSibling;
+      if (header) header.classList.remove("collapsed");
+    } else {
+      e.style.display = "none";
     }
   });
 
-  document.getElementById("no-results").style.display = (q && found===0) ? "block":"none";
+  document.getElementById("no-results").style.display = (q && found === 0) ? "block" : "none";
 });
 </script>
 
